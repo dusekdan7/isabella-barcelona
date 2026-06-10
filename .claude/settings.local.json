@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-Content \"C:\\\\Users\\\\danie\\\\Downloads\\\\import_chloe_products.py\")",
+      "Bash(Select-Object -Skip 16)",
+      "PowerShell(Set-Location \"C:\\\\Users\\\\danie\\\\Documents\\\\isabella_barcelona\"; $env:PYTHONIOENCODING=\"utf-8\"; python manage.py translate_names_es 2>&1)",
+      "Read(//mnt/c/Users/danie/Documents/**)",
+      "Bash(python manage.py runserver 8765)",
+      "WebFetch(domain:localhost)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://127.0.0.1:8000/coleccion/\" -UseBasicParsing -TimeoutSec 5 | Select-Object -ExpandProperty StatusCode)",
+      "PowerShell(python -c \"import playwright\" 2>&1; npx playwright --version 2>&1; python -m playwright --version 2>&1)",
+      "PowerShell(pip install *)",
+      "PowerShell(python -m playwright --version 2>&1)",
+      "PowerShell(python -m playwright install chromium 2>&1 | Select-Object -Last 4)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\danie\\\\Documents\\\\isabella_barcelona\" -Recurse -Force)",
+      "Bash(Select-Object FullName, PSIsContainer)",
+      "Bash(Sort-Object FullName)",
+      "PowerShell(New-Item *)",
+      "Bash(python manage.py makemigrations shop --name add_name_en_to_product)",
+      "Bash(python -c ' *)",
+      "Bash(python manage.py runserver 8000)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8000/)",
+      "Bash(/c/xampp/mysql/bin/mysqld.exe --defaults-file=/c/xampp/mysql/bin/my.ini)",
+      "Bash(/c/xampp/mysql/bin/mysqladmin.exe -u root ping)",
+      "Bash(python manage.py migrate)",
+      "Bash(curl -sc /tmp/cookies.txt http://127.0.0.1:8000/)",
+      "Bash(grep -o '\"[^\"]*\"$')",
+      "Bash(curl -sc /tmp/cookies2.txt \"http://127.0.0.1:8000/\" -o /tmp/homepage.html)",
+      "Read(//tmp/**)",
+      "Bash(grep -v \"^$\")",
+      "Bash(python -c \"import playwright; print\\('playwright ok'\\)\")",
+      "Bash(python -m playwright install chromium)",
+      "Bash(python manage.py makemigrations shop --name add_product_images)",
+      "Bash(python *)"
+    ]
+  }
+}

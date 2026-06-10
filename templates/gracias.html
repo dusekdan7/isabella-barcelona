@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}¡Gracias por tu pedido! — Isabella Barcelona{% endblock %}
+
+{% block content %}
+
+<div style="max-width: 700px; margin: 70px auto; padding: 0 40px; text-align: center;">
+
+    <!-- ICON -->
+    <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #f5eaec, #D9A0A0); display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; font-size: 36px; color: #7A3E48;">
+        <i class="fas fa-ring"></i>
+    </div>
+
+    <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 4px; color: #D9A0A0; margin-bottom: 12px;">PEDIDO CONFIRMADO</p>
+    <h1 style="font-family: Georgia, serif; font-size: 34px; color: #7A3E48; font-weight: normal; margin-bottom: 16px;">¡Gracias por tu pedido!</h1>
+    <p style="font-family: Georgia, serif; font-size: 15px; color: #666; line-height: 1.8; margin-bottom: 32px;">
+        Hemos recibido tu pedido y lo estamos preparando con mucho cariño.<br>
+        Recibirás un email de confirmación en breve.
+    </p>
+
+    <!-- ORDER NUMBER BOX -->
+    <div style="background: #f5eaec; border: 1px solid #f0d0d4; padding: 20px 32px; margin-bottom: 40px; display: inline-block; min-width: 280px;">
+        <p style="font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 3px; color: #D9A0A0; margin-bottom: 8px;">NÚMERO DE PEDIDO</p>
+        <p style="font-family: Georgia, serif; font-size: 24px; color: #7A3E48; letter-spacing: 4px;">{{ order.order_number }}</p>
+    </div>
+
+    <!-- ORDER DETAILS -->
+    <div style="background: #fff; border: 1px solid #f0e0e2; padding: 28px 32px; margin-bottom: 32px; text-align: left;">
+        <p style="font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 3px; color: #D9A0A0; margin-bottom: 20px;">DETALLE DEL PEDIDO</p>
+
+        {% for item in order.items.all %}
+        <div style="display: grid; grid-template-columns: 56px 1fr auto; gap: 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid #f8eef0;">
+            <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #f5eaec, #FCFAF8); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                {% if item.product.image_url %}
+                    <img src="{{ item.product.image_url }}" alt="{{ item.product.name_es }}" style="width: 100%; height: 100%; object-fit: cover;">
+                {% else %}
+                    <i class="fas fa-ring" style="font-size: 22px; color: #D9A0A0;"></i>
+                {% endif %}
+            </div>
+            <div>
+                <p style="font-family: Georgia, serif; font-size: 14px; color: #2a1c1c; margin-bottom: 3px;">{{ item.product.name_es }}</p>
+                <p style="font-family: Arial, sans-serif; font-size: 11px; color: #D9A0A0;">Cantidad: {{ item.qty }} × €{{ item.price }}</p>
+            </div>
+            <p style="font-family: Georgia, serif; font-size: 14px; color: #7A3E48; font-weight: bold; white-space: nowrap;">€{{ item.subtotal }}</p>
+        </div>
+        {% endfor %}
+
+        <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; font-family: Arial, sans-serif; font-size: 13px; color: #666;">
+                <span>Subtotal</span>
+                <span style="font-family: Georgia, serif; color: #2a1c1c;">€{{ order.total_amount }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-family: Arial, sans-serif; font-size: 13px; color: #666;">
+                <span>Envío</span>
+                {% if order.shipping_fee == 0 %}
+                    <span style="color: #4a9a4a;">Gratis</span>
+                {% else %}
+                    <span style="font-family: Georgia, serif; color: #2a1c1c;">€{{ order.shipping_fee }}</span>
+                {% endif %}
+            </div>
+            <div style="display: flex; justify-content: space-between; border-top: 1px solid #f0e0e2; padding-top: 12px; margin-top: 4px;">
+                <span style="font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; color: #2a1c1c;">Total</span>
+                <span style="font-family: Georgia, serif; font-size: 20px; color: #7A3E48; font-weight: bold;">€{{ order.total_amount }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SHIPPING INFO -->
+    <div style="background: #fff; border: 1px solid #f0e0e2; padding: 24px 32px; margin-bottom: 40px; text-align: left;">
+        <p style="font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 3px; color: #D9A0A0; margin-bottom: 16px;">DIRECCIÓN DE ENVÍO</p>
+        <p style="font-family: Georgia, serif; font-size: 14px; color: #2a1c1c; line-height: 1.8;">
+            {{ order.shipping_name }}<br>
+            {{ order.shipping_street }}<br>
+            {{ order.shipping_postal }} {{ order.shipping_city }}<br>
+            {{ order.shipping_country }}
+        </p>
+        <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #f0e0e2; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 20px; color: #7A3E48;"><i class="fas fa-truck"></i></span>
+            <p style="font-family: Arial, sans-serif; font-size: 12px; color: #888;">Entrega estimada en <strong style="color: #7A3E48;">2–4 días hábiles</strong>. Te enviaremos el número de seguimiento por email.</p>
+        </div>
+    </div>
+
+    <!-- CTAs -->
+    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="{% url 'coleccion' %}" style="background: #7A3E48; color: #FCFAF8; padding: 14px 36px; text-decoration: none; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;">
+            Seguir comprando
+        </a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'mi_cuenta' %}" style="background: transparent; color: #7A3E48; border: 1px solid #7A3E48; padding: 14px 36px; text-decoration: none; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;">
+            Mis pedidos
+        </a>
+        {% endif %}
+    </div>
+
+    <p style="font-family: Georgia, serif; font-size: 14px; color: #D9A0A0; margin-top: 50px; font-style: italic;">
+        Con amor, Isabella <i class="fas fa-ring"></i>
+    </p>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Cuenta — Isabella Barcelona{% endblock %}
+
+{% block content %}
+
+<section style="max-width: 460px; margin: 80px auto; padding: 0 40px;">
+
+    <div style="text-align: center; margin-bottom: 40px;">
+        <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 4px; color: #D9A0A0; margin-bottom: 12px;">ÚNETE</p>
+        <h1 style="font-family: Georgia, serif; font-size: 28px; color: #7A3E48; font-weight: normal;">Crear Cuenta</h1>
+        <p style="font-family: Georgia, serif; font-size: 13px; color: #888; margin-top: 10px; font-style: italic;">Forma parte de la familia Isabella Barcelona</p>
+    </div>
+
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 2px; color: #7A3E48; margin-bottom: 8px;">NOMBRE DE USUARIO</label>
+            <input type="text" name="username" required autofocus
+                style="width: 100%; border: 1px solid #D9A0A0; padding: 12px 16px; font-family: Georgia, serif; font-size: 14px; color: #2a1c1c; background: #FCFAF8; outline: none;"
+                onfocus="this.style.borderColor='#7A3E48'" onblur="this.style.borderColor='#D9A0A0'">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 2px; color: #7A3E48; margin-bottom: 8px;">EMAIL</label>
+            <input type="email" name="email"
+                style="width: 100%; border: 1px solid #D9A0A0; padding: 12px 16px; font-family: Georgia, serif; font-size: 14px; color: #2a1c1c; background: #FCFAF8; outline: none;"
+                onfocus="this.style.borderColor='#7A3E48'" onblur="this.style.borderColor='#D9A0A0'">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 2px; color: #7A3E48; margin-bottom: 8px;">CONTRASEÑA</label>
+            <input type="password" name="password1" required
+                style="width: 100%; border: 1px solid #D9A0A0; padding: 12px 16px; font-family: Georgia, serif; font-size: 14px; color: #2a1c1c; background: #FCFAF8; outline: none;"
+                onfocus="this.style.borderColor='#7A3E48'" onblur="this.style.borderColor='#D9A0A0'">
+        </div>
+
+        <div style="margin-bottom: 28px;">
+            <label style="display: block; font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 2px; color: #7A3E48; margin-bottom: 8px;">CONFIRMAR CONTRASEÑA</label>
+            <input type="password" name="password2" required
+                style="width: 100%; border: 1px solid #D9A0A0; padding: 12px 16px; font-family: Georgia, serif; font-size: 14px; color: #2a1c1c; background: #FCFAF8; outline: none;"
+                onfocus="this.style.borderColor='#7A3E48'" onblur="this.style.borderColor='#D9A0A0'">
+        </div>
+
+        <button type="submit" style="width: 100%; background: #7A3E48; color: #FCFAF8; border: none; padding: 16px; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer;">
+            Crear Cuenta
+        </button>
+
+        <p style="font-family: Arial, sans-serif; font-size: 11px; color: #aaa; text-align: center; margin-top: 16px; line-height: 1.6;">
+            Al crear una cuenta aceptas nuestras <a href="#" style="color: #7A3E48; text-decoration: none;">Condiciones de venta</a> y <a href="#" style="color: #7A3E48; text-decoration: none;">Política de privacidad</a>.
+        </p>
+
+    </form>
+
+    <div style="text-align: center; margin-top: 32px; padding-top: 28px; border-top: 1px solid #f0e0e2;">
+        <p style="font-family: Arial, sans-serif; font-size: 13px; color: #888; margin-bottom: 12px;">¿Ya tienes cuenta?</p>
+        <a href="{% url 'login' %}" style="font-family: Arial, sans-serif; font-size: 12px; color: #7A3E48; text-decoration: none; letter-spacing: 2px; border-bottom: 1px solid #D9A0A0; padding-bottom: 2px;">INICIAR SESIÓN</a>
+    </div>
+
+</section>
+
+{% endblock %}

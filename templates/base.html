@@ -1,0 +1,795 @@
+{% load static shop_extras %}
+<!DOCTYPE html>
+<html lang="{{ site_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>{% block title %}Isabella Barcelona{% endblock %}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Georgia, serif;
+            background: #FCFAF8;
+            color: #2a1c1c;
+        }
+
+        nav {
+            background: #FCFAF8;
+            border-bottom: 1px solid #D9A0A0;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo img { height: 45px; width: auto; }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2a1c1c;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: Arial, sans-serif;
+        }
+
+        .nav-links a:hover { color: #7A3E48; }
+
+        .nav-icons { display: flex; gap: 20px; align-items: center; }
+
+        .nav-icons a {
+            text-decoration: none;
+            color: #7A3E48;
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+        }
+
+        .nav-icons a:hover { color: #D9A0A0; }
+
+        .cart-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #7A3E48;
+            color: #fff;
+            font-size: 10px;
+            font-family: Arial, sans-serif;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .messages-bar {
+            padding: 10px 40px;
+            text-align: center;
+        }
+
+        /* ── Language / Currency switcher ── */
+        .pref-switcher {
+            position: relative;
+        }
+
+        .pref-btn {
+            background: none;
+            border: 1px solid #D9A0A0;
+            color: #7A3E48;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .pref-btn:hover { background: #fdf5f6; }
+
+        .pref-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            background: #fff;
+            border: 1px solid #f0e0e2;
+            box-shadow: 0 4px 16px rgba(122,62,72,0.10);
+            min-width: 310px;
+            z-index: 200;
+            padding: 10px 0;
+        }
+
+        .pref-menu.open { display: block; }
+
+        .pref-label {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #B08080;
+            padding: 4px 16px 2px;
+            text-transform: uppercase;
+        }
+
+        .pref-option {
+            display: block;
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 7px 16px;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            color: #2a1c1c;
+            cursor: pointer;
+        }
+
+        .pref-option:hover { background: #fdf5f6; color: #7A3E48; }
+        .pref-option.pref-active { color: #7A3E48; font-weight: bold; }
+        .pref-grid { display: grid; grid-template-columns: 1fr 1fr; }
+        .pref-grid .pref-option { padding: 6px 14px; font-size: 12px; }
+
+        .pref-divider {
+            border: none;
+            border-top: 1px solid #f0e0e2;
+            margin: 8px 0;
+        }
+
+        .messages-bar p {
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            padding: 8px 16px;
+            display: inline-block;
+        }
+
+        .messages-bar .success {
+            background: #edf7ed;
+            color: #2a7a4a;
+            border: 1px solid #b2dfb2;
+        }
+
+        .messages-bar .error {
+            background: #fdecea;
+            color: #c0392b;
+            border: 1px solid #f5c6c6;
+        }
+
+        main { min-height: 70vh; }
+
+        /* ═══════════════════════════════════════════
+           PRODUCT CARDS — shared across all pages
+        ═══════════════════════════════════════════ */
+        .ib-product-card {
+            position: relative;
+            background: #fff;
+            border: 1px solid #f0e0e2;
+            overflow: hidden;
+            transition: box-shadow 0.25s ease, transform 0.25s ease;
+        }
+        .ib-product-card:hover {
+            box-shadow: 0 10px 36px rgba(122,62,72,0.14);
+            transform: translateY(-3px);
+        }
+        .ib-card-link {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+        .ib-card-info { position: relative; z-index: 0; padding: 16px; }
+
+        /* Image wrapper + skeleton shimmer */
+        .ib-img-wrap {
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #f5eaec, #FCFAF8);
+        }
+        .ib-img-wrap img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .ib-product-card:hover .ib-img-wrap img { transform: scale(1.06); }
+        .ib-img-wrap.ib-shimmer {
+            background: linear-gradient(90deg, #f5eaec 25%, #fde8ed 50%, #f5eaec 75%);
+            background-size: 200% 100%;
+            animation: ib-shimmer 1.4s infinite linear;
+        }
+        @keyframes ib-shimmer {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Quick-add overlay */
+        .ib-quick-add {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            z-index: 2;
+            transform: translateY(100%);
+            transition: transform 0.28s ease;
+        }
+        .ib-product-card:hover .ib-quick-add { transform: translateY(0); }
+        .ib-quick-add form { margin: 0; }
+        .ib-quick-add-btn {
+            width: 100%;
+            background: rgba(122,62,72,0.93);
+            color: #FCFAF8;
+            border: none;
+            padding: 11px;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .ib-quick-add-btn:hover { background: #5c2e36; }
+
+        /* Wishlist heart button */
+        .ib-wish-btn {
+            position: absolute;
+            top: 10px; right: 10px;
+            z-index: 3;
+            background: rgba(252,250,248,0.9);
+            border: none;
+            border-radius: 50%;
+            width: 34px; height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            color: #ccc;
+            transition: all 0.2s ease;
+            opacity: 0;
+            transform: scale(0.8);
+            line-height: 1;
+            padding: 0;
+        }
+        .ib-product-card:hover .ib-wish-btn,
+        .ib-wish-btn.ib-wish-active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .ib-wish-btn.ib-wish-active { color: #7A3E48; }
+        .ib-wish-btn:hover {
+            background: #fff;
+            color: #7A3E48;
+            transform: scale(1.15) !important;
+        }
+
+        /* Card stagger animation (only with JS) */
+        .ib-js .ib-product-card {
+            opacity: 0;
+            animation: ib-card-in 0.42s ease both;
+        }
+        @keyframes ib-card-in {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ═══════════════════════════════════════════
+           GALLERY THUMBNAILS
+        ═══════════════════════════════════════════ */
+        .ib-thumb-strip {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .ib-thumb {
+            width: 68px; height: 68px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            overflow: hidden;
+            transition: border-color 0.2s, opacity 0.2s;
+            flex-shrink: 0;
+        }
+        .ib-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .ib-thumb:hover { border-color: #D9A0A0; }
+        .ib-thumb.ib-thumb-active { border-color: #7A3E48; }
+
+        /* ═══════════════════════════════════════════
+           BREADCRUMBS
+        ═══════════════════════════════════════════ */
+        .ib-breadcrumb {
+            padding: 18px 40px 0;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .ib-breadcrumb-inner {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            color: #B08080;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        .ib-breadcrumb a {
+            color: #B08080;
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .ib-breadcrumb a:hover { color: #7A3E48; }
+        .ib-breadcrumb .ib-crumb-sep { color: #D9A0A0; }
+        .ib-breadcrumb .ib-crumb-current { color: #7A3E48; font-weight: 600; }
+
+        /* ═══════════════════════════════════════════
+           STICKY ATC BAR
+        ═══════════════════════════════════════════ */
+        #ib-sticky-atc {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            z-index: 400;
+            background: #fff;
+            border-top: 1px solid #D9A0A0;
+            padding: 12px 40px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            box-shadow: 0 -4px 24px rgba(122,62,72,0.10);
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        #ib-sticky-atc.ib-sticky-visible { transform: translateY(0); }
+
+        /* ═══════════════════════════════════════════
+           ZOOM MODAL
+        ═══════════════════════════════════════════ */
+        #ib-zoom-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(20,8,10,0.88);
+            z-index: 600;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+        }
+        #ib-zoom-modal.open { display: flex; }
+        #ib-zoom-modal img {
+            max-height: 90vh;
+            max-width: 90vw;
+            object-fit: contain;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: ib-zoom-in 0.2s ease;
+        }
+        @keyframes ib-zoom-in {
+            from { opacity: 0; transform: scale(0.92); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes ib-blink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.2; transform: scale(0.65); }
+        }
+
+        /* ═══════════════════════════════════════════
+           HAMBURGER + MOBILE NAV
+        ═══════════════════════════════════════════ */
+        .ib-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 6px;
+            z-index: 150;
+        }
+        .ib-hamburger span {
+            display: block;
+            width: 22px; height: 2px;
+            background: #7A3E48;
+            transition: all 0.28s ease;
+            border-radius: 1px;
+        }
+        .ib-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .ib-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .ib-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .ib-mobile-nav {
+            display: none;
+            position: fixed;
+            top: 70px; right: 0; bottom: 0;
+            height: auto !important;          /* override nav { height: 70px } */
+            width: min(300px, 100vw);
+            background: #FCFAF8;
+            z-index: 200;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.32s ease;
+            border-left: 1px solid #f0e0e2;
+            box-shadow: -8px 0 32px rgba(122,62,72,0.10);
+            /* reset inherited nav styles */
+            align-items: flex-start !important;
+            justify-content: flex-start !important;
+            flex-direction: column;
+            padding: 0 !important;
+        }
+        .ib-mobile-nav.open { transform: translateX(0); }
+        .ib-mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(42,28,28,0.35);
+            z-index: 199;
+        }
+        .ib-mobile-nav-overlay.open { display: block; }
+        .ib-mobile-nav a {
+            display: block;
+            padding: 15px 24px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #2a1c1c;
+            text-decoration: none;
+            border-bottom: 1px solid #f0e0e2;
+            transition: color 0.15s, background 0.15s;
+        }
+        .ib-mobile-nav a:hover { color: #7A3E48; background: #fdf5f6; }
+        .ib-mobile-nav .ib-mob-sep {
+            height: 1px;
+            background: #D9A0A0;
+            margin: 6px 24px;
+        }
+        .ib-mobile-nav .ib-mob-label {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: #B08080;
+            padding: 12px 24px 4px;
+        }
+
+        /* ═══════════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════════ */
+        @media (max-width: 900px) {
+            .nav-links { display: none !important; }
+            .ib-hamburger { display: flex !important; }
+            .ib-mobile-nav { display: block; top: 60px; }
+            nav:not(.ib-mobile-nav) { padding: 0 20px !important; height: 60px !important; }
+            .logo img { height: 38px !important; }
+            .nav-icons { gap: 12px !important; }
+            .ib-breadcrumb { padding: 12px 20px 0; }
+            #ib-sticky-atc { padding: 10px 16px; gap: 12px; }
+            #ib-sticky-atc .ib-sticky-name { display: none; }
+        }
+        @media (max-width: 600px) {
+            .ib-product-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="logo">
+        <img src="{% static 'ISABELLA.png' %}" alt="Isabella Barcelona">
+    </a>
+
+    <ul class="nav-links">
+        <li><a href="/">{{ nav.nav_inicio }}</a></li>
+        <li><a href="/coleccion/">{{ nav.nav_coleccion }}</a></li>
+        <li><a href="/coleccion/?category=PENDIENTES">{{ nav.nav_pendientes }}</a></li>
+        <li><a href="/coleccion/?category=COLLARES">{{ nav.nav_collares }}</a></li>
+        <li><a href="/coleccion/?category=ANILLOS">{{ nav.nav_anillos }}</a></li>
+        <li><a href="/coleccion/?category=BRAZALETES">{{ nav.nav_brazaletes }}</a></li>
+    </ul>
+
+    <div class="nav-icons">
+
+        <!-- KOŠÍK s počítadlem -->
+        <a href="{% url 'carrito' %}" class="cart-icon">
+            <i class="fas fa-shopping-cart"></i> {{ nav.nav_carrito }}
+            {% if request.session.cart %}
+                {% with count=request.session.cart.values|length %}
+                    {% if count > 0 %}
+                        <span class="cart-badge">{{ count }}</span>
+                    {% endif %}
+                {% endwith %}
+            {% endif %}
+        </a>
+
+        <!-- LOGIN / MI CUENTA -->
+        {% if user.is_authenticated %}
+            <a href="{% url 'mi_cuenta' %}"><i class="fas fa-user"></i> {{ user.username }}</a>
+            <a href="{% url 'logout' %}" style="color: #D9A0A0;">{{ nav.nav_salir }}</a>
+        {% else %}
+            <a href="{% url 'login' %}"><i class="fas fa-user"></i> {{ nav.nav_mi_cuenta }}</a>
+        {% endif %}
+
+        <!-- HAMBURGER (mobile only) -->
+        <button class="ib-hamburger" id="ibHamburger" onclick="ibToggleNav()" aria-label="Abrir menú" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+
+        <!-- LANG / CURRENCY SWITCHER -->
+        <div class="pref-switcher" id="prefSwitcher">
+            <button class="pref-btn" type="button" onclick="togglePrefMenu(event)" aria-expanded="false" aria-haspopup="true">
+                {{ site_lang|lang_flag }} {{ site_lang|upper }} | {{ site_currency }} ▾
+            </button>
+            <div class="pref-menu" id="prefMenu" role="menu">
+                <form method="post" action="{% url 'set_preferences' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <p class="pref-label">Idioma / Language</p>
+                    <div class="pref-grid">
+                        <button type="submit" name="lang" value="es" class="pref-option {% if site_lang == 'es' %}pref-active{% endif %}" role="menuitem">🇪🇸 Español</button>
+                        <button type="submit" name="lang" value="en" class="pref-option {% if site_lang == 'en' %}pref-active{% endif %}" role="menuitem">🇬🇧 English</button>
+                        <button type="submit" name="lang" value="fr" class="pref-option {% if site_lang == 'fr' %}pref-active{% endif %}" role="menuitem">🇫🇷 Français</button>
+                        <button type="submit" name="lang" value="de" class="pref-option {% if site_lang == 'de' %}pref-active{% endif %}" role="menuitem">🇩🇪 Deutsch</button>
+                        <button type="submit" name="lang" value="it" class="pref-option {% if site_lang == 'it' %}pref-active{% endif %}" role="menuitem">🇮🇹 Italiano</button>
+                        <button type="submit" name="lang" value="cs" class="pref-option {% if site_lang == 'cs' %}pref-active{% endif %}" role="menuitem">🇨🇿 Čeština</button>
+                    </div>
+                    <hr class="pref-divider">
+                    <p class="pref-label">Moneda / Currency</p>
+                    <div class="pref-grid">
+                        <button type="submit" name="currency" value="EUR" class="pref-option {% if site_currency == 'EUR' %}pref-active{% endif %}" role="menuitem">€ EUR — Euro</button>
+                        <button type="submit" name="currency" value="USD" class="pref-option {% if site_currency == 'USD' %}pref-active{% endif %}" role="menuitem">$ USD — Dólar</button>
+                        <button type="submit" name="currency" value="GBP" class="pref-option {% if site_currency == 'GBP' %}pref-active{% endif %}" role="menuitem">£ GBP — Libra</button>
+                        <button type="submit" name="currency" value="CHF" class="pref-option {% if site_currency == 'CHF' %}pref-active{% endif %}" role="menuitem">Fr CHF — Franco</button>
+                        <button type="submit" name="currency" value="PLN" class="pref-option {% if site_currency == 'PLN' %}pref-active{% endif %}" role="menuitem">zł PLN — Złoty</button>
+                        <button type="submit" name="currency" value="CZK" class="pref-option {% if site_currency == 'CZK' %}pref-active{% endif %}" role="menuitem">Kč CZK — Koruna</button>
+                        <button type="submit" name="currency" value="SEK" class="pref-option {% if site_currency == 'SEK' %}pref-active{% endif %}" role="menuitem">kr SEK — Krona</button>
+                        <button type="submit" name="currency" value="NOK" class="pref-option {% if site_currency == 'NOK' %}pref-active{% endif %}" role="menuitem">kr NOK — Krone</button>
+                        <button type="submit" name="currency" value="DKK" class="pref-option {% if site_currency == 'DKK' %}pref-active{% endif %}" role="menuitem">kr DKK — Krone</button>
+                        <button type="submit" name="currency" value="AUD" class="pref-option {% if site_currency == 'AUD' %}pref-active{% endif %}" role="menuitem">A$ AUD — Dólar</button>
+                        <button type="submit" name="currency" value="CAD" class="pref-option {% if site_currency == 'CAD' %}pref-active{% endif %}" role="menuitem">C$ CAD — Dólar</button>
+                        <button type="submit" name="currency" value="JPY" class="pref-option {% if site_currency == 'JPY' %}pref-active{% endif %}" role="menuitem">¥ JPY — Yen</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</nav>
+
+<script>
+function togglePrefMenu(e) {
+    e.stopPropagation();
+    var menu = document.getElementById('prefMenu');
+    var btn = e.currentTarget;
+    var isOpen = menu.classList.contains('open');
+    menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+}
+document.addEventListener('click', function() {
+    var menu = document.getElementById('prefMenu');
+    if (menu) {
+        menu.classList.remove('open');
+        var btn = document.querySelector('.pref-btn');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+    }
+});
+</script>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="ib-mobile-nav-overlay" id="ibMobOverlay" onclick="ibToggleNav()"></div>
+
+<!-- MOBILE NAV PANEL -->
+<nav class="ib-mobile-nav" id="ibMobileNav" aria-label="Menú móvil">
+    <p class="ib-mob-label">{{ nav.mob_menu }}</p>
+    <a href="/">{{ nav.nav_inicio }}</a>
+    <a href="/coleccion/">{{ nav.nav_coleccion }}</a>
+    <div class="ib-mob-sep"></div>
+    <p class="ib-mob-label">{{ nav.mob_cats }}</p>
+    <a href="/coleccion/?category=PENDIENTES">{{ nav.nav_pendientes }}</a>
+    <a href="/coleccion/?category=COLLARES">{{ nav.nav_collares }}</a>
+    <a href="/coleccion/?category=ANILLOS">{{ nav.nav_anillos }}</a>
+    <a href="/coleccion/?category=BRAZALETES">{{ nav.nav_brazaletes }}</a>
+    <div class="ib-mob-sep"></div>
+    <p class="ib-mob-label">{{ nav.nav_mi_cuenta }}</p>
+    {% if user.is_authenticated %}
+        <a href="{% url 'mi_cuenta' %}"><i class="fas fa-user"></i> {{ user.username }}</a>
+        <a href="{% url 'logout' %}">{{ nav.nav_cerrar }}</a>
+    {% else %}
+        <a href="{% url 'login' %}">{{ nav.nav_login }}</a>
+        <a href="{% url 'register' %}">{{ nav.nav_register }}</a>
+    {% endif %}
+</nav>
+
+<!-- FLASH MESSAGES -->
+{% if messages %}
+<div class="messages-bar">
+    {% for msg in messages %}
+        <p class="{{ msg.tags }}">{{ msg }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer style="background: #7A3E48; color: #FCFAF8; padding: 50px 40px 30px 40px; margin-top: 60px;">
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 1200px; margin: 0 auto 40px auto;">
+
+        <!-- NEWSLETTER -->
+        <div>
+            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; margin-bottom: 16px; color: #D9A0A0;">ÚNETE A LA FAMILIA</p>
+            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; margin-bottom: 16px; color: #f0e0e2;">Recibe en primicia nuestras nuevas colecciones y ofertas exclusivas.</p>
+            <div style="display: flex; border-bottom: 1px solid #D9A0A0;">
+                <input type="email" placeholder="Tu dirección email" style="background: transparent; border: none; color: #FCFAF8; font-family: Georgia, serif; font-size: 12px; padding: 8px 0; flex: 1; outline: none;">
+                <button style="background: transparent; border: none; color: #D9A0A0; cursor: pointer; font-size: 18px;">→</button>
+            </div>
+        </div>
+
+        <!-- MISE -->
+        <div>
+            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; margin-bottom: 16px; color: #D9A0A0;">NUESTRA MISIÓN</p>
+            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; color: #f0e0e2; font-style: italic;">Isabella Barcelona nació de una idea simple — que cada mujer merece llevar algo bello cada día.</p>
+            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; color: #f0e0e2; font-style: italic; margin-top: 10px;">Con amor, Isabella <i class="fas fa-ring"></i></p>
+        </div>
+
+        <!-- INFORMACE -->
+        <div>
+            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; margin-bottom: 16px; color: #D9A0A0;">INFORMACIÓN</p>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 10px;"><a href="{% url 'preguntas_frecuentes' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">Preguntas frecuentes</a></li>
+                <li style="margin-bottom: 10px;"><a href="{% url 'nuestra_historia' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">Nuestra Historia</a></li>
+                <li style="margin-bottom: 10px;"><a href="{% url 'aviso_legal' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">Aviso Legal</a></li>
+                <li style="margin-bottom: 10px;"><a href="{% url 'condiciones_venta' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">Condiciones de venta</a></li>
+                <li style="margin-bottom: 10px;"><a href="{% url 'politica_devoluciones' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">Política de devoluciones</a></li>
+            </ul>
+        </div>
+
+        <!-- SERVIS -->
+        <div>
+            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; margin-bottom: 16px; color: #D9A0A0;">ATENCIÓN AL CLIENTE</p>
+            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; color: #f0e0e2;">¿Tienes alguna pregunta o necesitas ayuda?</p>
+            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; color: #f0e0e2; margin-top: 10px;">Nuestro equipo está aquí para acompañarte.</p>
+            <p style="font-family: Arial, sans-serif; font-size: 12px; color: #D9A0A0; margin-top: 16px;"><i class="fas fa-envelope"></i> info@isabellabcn.com</p>
+            <p style="font-family: Arial, sans-serif; font-size: 12px; color: #D9A0A0; margin-top: 6px;"><i class="fas fa-clock"></i> Lunes – Viernes: 10:00 – 18:00</p>
+        </div>
+    </div>
+
+    <!-- DOLNÍ LINKA -->
+    <div style="border-top: 1px solid #a06070; padding-top: 24px; text-align: center; max-width: 1200px; margin: 0 auto;">
+        <p style="font-family: Georgia, serif; font-size: 13px; color: #D9A0A0; letter-spacing: 2px;">© 2026 Isabella Barcelona · Todos los derechos reservados</p>
+    </div>
+</footer>
+
+<!-- ═══════════════ GLOBAL JS ═══════════════ -->
+<script>
+/* ── Wishlist (localStorage) ── */
+var IB_WL_KEY = 'ib_wishlist';
+function ibGetWL() { try { return JSON.parse(localStorage.getItem(IB_WL_KEY)||'[]'); } catch(e) { return []; } }
+function ibSaveWL(l) { localStorage.setItem(IB_WL_KEY, JSON.stringify(l)); }
+function ibToggleWishlist(id, btn) {
+    var l = ibGetWL(), k = String(id), i = l.indexOf(k);
+    if (i === -1) { l.push(k); btn.classList.add('ib-wish-active'); btn.innerHTML='&#9829;'; btn.title='Quitar de favoritos'; }
+    else          { l.splice(i,1); btn.classList.remove('ib-wish-active'); btn.innerHTML='&#9825;'; btn.title='Añadir a favoritos'; }
+    ibSaveWL(l);
+    event.stopPropagation();
+}
+function ibRestoreWL() {
+    var l = ibGetWL();
+    document.querySelectorAll('[data-wish-id]').forEach(function(btn) {
+        if (l.indexOf(String(btn.dataset.wishId)) !== -1) {
+            btn.classList.add('ib-wish-active');
+            btn.innerHTML = '&#9829;';
+        }
+    });
+}
+
+/* ── Skeleton shimmer on images ── */
+function ibInitShimmer() {
+    document.querySelectorAll('.ib-img-wrap').forEach(function(wrap) {
+        var img = wrap.querySelector('img');
+        if (!img) return;
+        wrap.classList.add('ib-shimmer');
+        function done() { wrap.classList.remove('ib-shimmer'); }
+        if (img.complete && img.naturalWidth > 0) { done(); }
+        else { img.addEventListener('load', done); img.addEventListener('error', done); }
+    });
+}
+
+/* ── Staggered card animation ── */
+function ibInitCards() {
+    document.body.classList.add('ib-js');
+    document.querySelectorAll('.ib-product-card').forEach(function(c, i) {
+        c.style.animationDelay = Math.min(i * 0.055, 0.55) + 's';
+    });
+}
+
+/* ── Hamburger menu ── */
+function ibToggleNav() {
+    var nav = document.getElementById('ibMobileNav');
+    var btn = document.getElementById('ibHamburger');
+    var overlay = document.getElementById('ibMobOverlay');
+    var open = nav.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    overlay.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+/* ── Zoom modal ── */
+function ibOpenZoom(src) {
+    var m = document.getElementById('ib-zoom-modal');
+    if (!m) return;
+    document.getElementById('ib-zoom-img').src = src;
+    m.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function ibCloseZoom() {
+    var m = document.getElementById('ib-zoom-modal');
+    if (m) { m.classList.remove('open'); document.body.style.overflow = ''; }
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { ibCloseZoom(); } });
+
+/* ── Init all on load ── */
+document.addEventListener('DOMContentLoaded', function() {
+    ibRestoreWL();
+    ibInitShimmer();
+    ibInitCards();
+});
+</script>
+
+<!-- ZOOM MODAL (shared, rendered once) -->
+<div id="ib-zoom-modal" onclick="ibCloseZoom()" role="dialog" aria-modal="true">
+    <img id="ib-zoom-img" alt="Vista ampliada">
+</div>
+
+<!-- EXIT INTENT POPUP -->
+<div id="ib-exit-overlay" style="display:none; position:fixed; inset:0; background:rgba(42,28,28,0.72); z-index:9000; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#FCFAF8; max-width:420px; width:100%; padding:48px 40px 40px; text-align:center; position:relative; animation:ib-zoom-in 0.28s ease; box-shadow:0 24px 64px rgba(42,28,28,0.3);">
+        <button onclick="ibCloseExit()" style="position:absolute; top:14px; right:18px; background:none; border:none; font-size:22px; color:#B08080; cursor:pointer; line-height:1; padding:0;" aria-label="Cerrar">✕</button>
+        <p style="font-size:36px; margin-bottom:8px; color:#7A3E48;"><i class="fas fa-heart"></i></p>
+        <p style="font-family:Arial,sans-serif; font-size:10px; letter-spacing:3px; color:#D9A0A0; margin-bottom:10px; text-transform:uppercase;">No te vayas aún</p>
+        <h2 style="font-family:Georgia,serif; font-size:24px; color:#7A3E48; font-weight:normal; line-height:1.4; margin-bottom:14px;">¡Espera! Tu carrito<br>te está esperando <i class="fas fa-heart" style="color:#D9A0A0;"></i></h2>
+        <p style="font-family:Arial,sans-serif; font-size:13px; color:#888; line-height:1.7; margin-bottom:24px;">Como regalo especial, usa este código exclusivo y llévate un 10% de descuento en tu pedido:</p>
+        <div style="background:#fff; border:2px dashed #D9A0A0; padding:16px 28px; margin:0 auto 24px; display:inline-block; min-width:200px;">
+            <p style="font-family:Arial,sans-serif; font-size:10px; color:#B08080; letter-spacing:2px; margin-bottom:6px; text-transform:uppercase;">Tu código exclusivo</p>
+            <p style="font-family:Georgia,serif; font-size:28px; color:#7A3E48; letter-spacing:5px; font-weight:bold; margin:0;">ISABELLA10</p>
+            <p style="font-family:Arial,sans-serif; font-size:11px; color:#D9A0A0; margin-top:6px;">10% de descuento en tu pedido</p>
+        </div>
+        <a href="/coleccion/" onclick="ibCloseExit()" style="display:block; background:#7A3E48; color:#FCFAF8; padding:15px; text-decoration:none; font-family:Arial,sans-serif; font-size:11px; letter-spacing:3px; text-transform:uppercase; margin-bottom:12px; transition:background 0.2s;">Quiero mi descuento →</a>
+        <button onclick="ibCloseExit()" style="background:none; border:none; font-family:Arial,sans-serif; font-size:11px; color:#B08080; cursor:pointer; letter-spacing:1px; text-decoration:underline; text-underline-offset:3px;">No, gracias — prefiero pagar más</button>
+    </div>
+</div>
+<script>
+(function() {
+    if (sessionStorage.getItem('ibExitSeen')) return;
+    var fired = false;
+    document.addEventListener('mouseleave', function(e) {
+        if (fired || e.clientY > 8) return;
+        fired = true;
+        sessionStorage.setItem('ibExitSeen', '1');
+        var overlay = document.getElementById('ib-exit-overlay');
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    });
+})();
+function ibCloseExit() {
+    document.getElementById('ib-exit-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+</script>
+
+</body>
+</html>

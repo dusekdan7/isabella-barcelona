@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block title %}Preguntas Frecuentes — Isabella Barcelona{% endblock %}
+
+{% block content %}
+<section style="background: linear-gradient(135deg, #f5eaec, #FCFAF8); padding: 60px 40px; text-align: center; border-bottom: 1px solid #f0e0e2;">
+    <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 4px; color: #D9A0A0; margin-bottom: 12px;">AYUDA</p>
+    <h1 style="font-family: Georgia, serif; font-size: 36px; color: #7A3E48; font-weight: normal;">Preguntas Frecuentes</h1>
+</section>
+
+<section style="max-width: 780px; margin: 70px auto; padding: 0 40px 80px;">
+
+<style>
+.faq-item { border: 1px solid #f0e0e2; margin-bottom: 10px; background: #fff; }
+.faq-btn { width:100%; display:flex; justify-content:space-between; align-items:center; padding:20px 26px; cursor:pointer; background:none; border:none; text-align:left; gap:16px; }
+.faq-btn:hover { background:#fdf5f6; }
+.faq-btn.open { background:#fdf5f6; }
+.faq-q { font-family:Arial,sans-serif; font-size:14px; font-weight:600; color:#3a1c22; line-height:1.4; }
+.faq-btn.open .faq-q { color:#7A3E48; }
+.faq-icon { flex-shrink:0; width:26px; height:26px; border-radius:50%; border:1.5px solid #D9A0A0; color:#D9A0A0; font-size:17px; display:flex; align-items:center; justify-content:center; transition:transform .3s,background .2s; }
+.faq-btn.open .faq-icon { background:#7A3E48; border-color:#7A3E48; color:#fff; transform:rotate(45deg); }
+.faq-body { max-height:0; overflow:hidden; transition:max-height .35s ease; }
+.faq-body.open { max-height:400px; }
+.faq-inner { padding:0 26px 22px; border-top:1px solid #f0e0e2; font-family:Georgia,serif; font-size:14px; color:#666; line-height:1.85; padding-top:18px; }
+.faq-group { font-family:Arial,sans-serif; font-size:10px; letter-spacing:3px; color:#D9A0A0; text-transform:uppercase; margin:40px 0 16px; }
+.faq-group:first-child { margin-top:0; }
+</style>
+
+<script>
+function faqToggle(btn){
+  var body=btn.nextElementSibling, open=body.classList.contains('open');
+  document.querySelectorAll('.faq-body.open').forEach(function(b){b.classList.remove('open');b.previousElementSibling.classList.remove('open');});
+  if(!open){body.classList.add('open');btn.classList.add('open');}
+}
+</script>
+
+<!-- ENVÍO -->
+<p class="faq-group">Envío y entrega</p>
+
+<div class="faq-item">
+  <button class="faq-btn" onclick="faqToggle(this)"><span class="faq-q">¿Cuánto tarda el envío y cuánto cuesta?</span><span class="faq-icon">+</span></button>
+  <div class="faq-body"><div class="faq-inner">Los pedidos se preparan en 24–48 h laborables desde Barcelona. El envío estándar a España Península tarda <strong>2–4 días hábiles</strong> y tiene un coste de <strong>€3,90</strong>. A partir de <strong>€100 de compra el envío es completamente gratuito</strong>. Para Baleares, Canarias y Portugal el plazo es de 4–6 días hábiles. Para el resto de Europa, 5–8 días hábiles. Recibirás un número de seguimiento por email en cuanto tu pedido salga de almacén.</div></div>
+</div>
+
+<div class="faq-item">
+  <button class="faq-btn" onclick="faqToggle(this)"><span class="faq-q">¿Puedo hacer seguimiento de mi pedido?</span><span class="faq-icon">+</span></button>
+  <div class="faq-body"><div class="faq-inner">Sí. En cuanto tu pedido sea recogido por el transportista recibirás un email con el número de seguimiento. Con él podrás consultar en todo momento el estado de tu entrega en el portal de la empresa de transporte correspondiente. Si transcurridas 48 h no recibes el email de seguimiento, escríbenos a <em>info@isabellabcn.com</em>.</div></div>
+</div>
+
+<div class="faq-item">
+  <button class="faq-btn" onclick="faqToggle(this)"><span class="faq-q">¿Enviáis fuera de España?</span><span class="faq-icon">+</span></button>
+  <div class="faq-body"><div class="faq-inner">Sí, enviamos a toda la Unión Europea. Los gastos de envío y plazos varían según el destino y se calculan automáticamente al finalizar tu compra. Para envíos fuera de la UE, contáctanos directamente en <em>info@isabellabcn.com</em> y te daremos presupuesto personalizado.</div></div>
+</div>
+
+<!-- DEVOLUCIONES -->
+<p class="faq-group">Devoluciones y cambios</p>
+
+<div class="faq-item">
+  <button class="faq-btn" onclick="faqToggle(this)"><span class="faq-q">¿Puedo devolver o cambiar mi pedido?</span><span class="faq-icon">+</span></button>
+  <div class="faq-body"><div class="faq-inner">Sí, tienes <strong>30 días desde la fecha de recepción</strong> para devolver cualquier artículo sin necesidad de justificación. La devolución es gratuita: escríbenos a <em>info@isabellabcn.com</em> con tu número de pedido y te enviaremos una etiqueta prepagada. El artículo debe estar sin usar y en su embalaje original. El reembolso se procesa en un plazo de <strong>3–5 días hábiles</strong> tras recibir la devolución.</div></div>
+</div>
+
+<div class="faq-item">
+  <button class="faq-btn" onclick="faqToggle(this)"><span class="faq-q">¿Qué hago si he recibido un artículo defectuoso?</span><span class="faq-icon">+</span></button>
+  <div class="faq-body"><div class="faq-inner">Si recibes un artículo con algún defecto o que no corresponde a tu pedido, contáctanos en las primeras 48 h por email a <em>info@isabellabcn.com</em> adjuntando una foto del artículo. Te enviaremos un reemplazo gratuito o realizaremos el reembolso completo, según prefieras, sin ningún coste adicional para ti.</div></div>
+</div>
+
+<!-- PRODUCTOS -->
+<p class="faq-group">Productos y materiales</p>
+
+<div class="faq-item">
+  <button class="faq-btn" onclick="faqToggle(this)"><span class="faq-q">¿Qué materiales usáis en vuestras joyas?</span><span class="faq-icon">+</span></button>
+  <div class="faq-body"><div class="faq-inner">Trabajamos exclusivamente con materiales hipoalergénicos de alta calidad: <strong>plata de ley 925</strong>, <strong>acero inoxidable 316L</strong> y <strong>plata bañada en oro real de 14 kilates o en oro rosa</strong>. No utilizamos níquel ni plomo. Las piedras decorativas son zircónitas de alta pureza. Todas nuestras piezas están diseñadas para resistir el contacto con el agua, el sudor y el calor del día a día.</div></div>
+</div>
+
+<div class="faq-item">
+  <button class="faq-btn" onclick="faqToggle(this)"><span class="faq-q">¿Cómo sé qué talla de anillo elegir?</span><span class="faq-icon">+</span></button>
+  <div class="faq-body"><div class="faq-inner">La manera más sencilla es medir el diámetro interior de un anillo que ya te quede bien: <strong>talla 48 = 15,3 mm · talla 50 = 15,9 mm · talla 52 = 16,5 mm · talla 54 = 17,2 mm · talla 56 = 17,8 mm</strong>. Si estás entre dos tallas, elige la mayor. Muchos de nuestros anillos son ajustables y se adaptan a cualquier dedo. Si tienes dudas, escríbenos y te ayudamos a elegir.</div></div>
+</div>
+
+<div class="faq-item">
+  <button class="faq-btn" onclick="faqToggle(this)"><span class="faq-q">¿Cómo cuido mis joyas para que duren más?</span><span class="faq-icon">+</span></button>
+  <div class="faq-body"><div class="faq-inner"><strong>1)</strong> Guárdalas en la cajita o bolsita incluida en tu pedido. <strong>2)</strong> Evita el contacto con perfumes, cremas y productos de belleza — póntelas siempre la última. <strong>3)</strong> Límpialas con un paño suave y seco. <strong>4)</strong> Aunque son resistentes al agua, recomendamos quitárselas antes de nadar en el mar o en cloro. Con estos sencillos cuidados durarán años en perfecto estado.</div></div>
+</div>
+
+<!-- PEDIDOS Y PAGO -->
+<p class="faq-group">Pedidos y pago</p>
+
+<div class="faq-item">
+  <button class="faq-btn" onclick="faqToggle(this)"><span class="faq-q">¿Qué métodos de pago aceptáis?</span><span class="faq-icon">+</span></button>
+  <div class="faq-body"><div class="faq-inner">Aceptamos <strong>tarjeta de crédito y débito</strong> (Visa, Mastercard, American Express), <strong>PayPal</strong> y <strong>pago contra reembolso</strong> (+€2,50). Los pagos con tarjeta se procesan a través de <strong>Stripe</strong> con cifrado SSL extremo a extremo. No almacenamos ningún dato bancario en nuestros servidores.</div></div>
+</div>
+
+<div class="faq-item">
+  <button class="faq-btn" onclick="faqToggle(this)"><span class="faq-q">¿Puedo modificar o cancelar un pedido?</span><span class="faq-icon">+</span></button>
+  <div class="faq-body"><div class="faq-inner">Puedes modificar o cancelar tu pedido siempre que no haya sido procesado para su envío. Contáctanos lo antes posible en <em>info@isabellabcn.com</em> indicando tu número de pedido. Si el pedido ya está en tránsito, podrás devolverlo una vez lo recibas siguiendo nuestra política de devoluciones de 30 días.</div></div>
+</div>
+
+<div class="faq-item">
+  <button class="faq-btn" onclick="faqToggle(this)"><span class="faq-q">¿El paquete viene con regalo o embalaje especial?</span><span class="faq-icon">+</span></button>
+  <div class="faq-body"><div class="faq-inner">Sí. Todos los pedidos se entregan en un elegante estuche de joyería Isabella Barcelona, perfecto para regalo. Puedes añadir una tarjeta personalizada en el momento de la compra. El embalaje exterior es discreto, sin indicación del contenido ni del precio, ideal si es un regalo sorpresa.</div></div>
+</div>
+
+</section>
+{% endblock %}
