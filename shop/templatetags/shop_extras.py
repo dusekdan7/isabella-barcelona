@@ -1,3 +1,4 @@
+import math
 from decimal import Decimal, ROUND_HALF_UP
 from django import template
 
@@ -21,6 +22,21 @@ CURRENCIES = {
 _LANG_FLAGS = {'es': '🇪🇸', 'en': '🇬🇧', 'fr': '🇫🇷', 'de': '🇩🇪', 'it': '🇮🇹', 'cs': '🇨🇿'}
 
 
+def _psych_price(converted: Decimal, dec: int) -> Decimal:
+    """Snap a converted price up to the nearest psychological price."""
+    if dec == 0:
+        # Round up to nearest integer ending in 9 (e.g. 998 → 999, 1000 → 1009)
+        n = math.ceil(float(converted))
+        remainder = n % 10
+        if remainder != 9:
+            n += (9 - remainder) if remainder < 9 else 10 - remainder + 9
+        return Decimal(n)
+    else:
+        # Round up to nearest x.99 (e.g. 39.5 → 39.99, 40.0 → 40.99)
+        x = math.ceil(float(converted) - 0.99)
+        return Decimal(x) + Decimal('0.99')
+
+
 @register.filter
 def product_name(product, lang):
     if lang in ('en', 'fr', 'de', 'it', 'cs'):
@@ -34,13 +50,13 @@ def price_display(price, currency):
         return ''
     price = Decimal(str(price))
     cfg = CURRENCIES.get(currency) or CURRENCIES['EUR']
-    converted = price * cfg['rate']
+    converted = _psych_price(price * cfg['rate'], cfg['dec'])
     if cfg['dec'] == 0:
-        amount = str(int(converted.quantize(Decimal('1'), rounding=ROUND_HALF_UP)))
+        amount = str(int(converted))
     else:
         amount = str(converted.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP))
     if cfg['after']:
-        return f"{amount} {cfg['symbol']}"
+        return f"{amount} {cfg['symbol']}"
     return f"{cfg['symbol']}{amount}"
 
 

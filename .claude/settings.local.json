@@ -32,7 +32,9 @@
       "Bash(python -m playwright install chromium)",
       "Bash(python manage.py makemigrations shop --name add_product_images)",
       "Bash(python *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
     ]
   }
 }
