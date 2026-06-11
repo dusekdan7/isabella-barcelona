@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load shop_extras %}
 
-{% block title %}Finalizar Compra — Isabella Barcelona{% endblock %}
+{% block title %}{{ nav.ck_bc_payment }} — Isabella Barcelona{% endblock %}
 
 {% block content %}
 
@@ -39,7 +39,6 @@
     .ck-btn { width: 100%; background: #7A3E48; color: #FCFAF8; padding: 18px; border: none; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; margin-top: 8px; transition: background 0.2s; }
     .ck-btn:hover { background: #5e2e36; }
 
-    /* Summary sidebar */
     .ck-summary { background: #fff; border: 1px solid #f0e0e2; padding: 28px; position: sticky; top: 90px; }
     .ck-sum-item { display: grid; grid-template-columns: 60px 1fr auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid #f8eef0; }
     .ck-sum-item:last-of-type { border-bottom: none; }
@@ -57,10 +56,10 @@
 <!-- BREADCRUMB -->
 <div style="background: #f5eaec; padding: 10px 40px;">
     <p style="font-family: Arial, sans-serif; font-size: 11px; color: #7A3E48; letter-spacing: 1px;">
-        <a href="/" style="color: #D9A0A0; text-decoration: none;">Inicio</a>
+        <a href="/" style="color: #D9A0A0; text-decoration: none;">{{ nav.nav_inicio }}</a>
         &nbsp;/&nbsp;
-        <a href="{% url 'carrito' %}" style="color: #D9A0A0; text-decoration: none;">Carrito</a>
-        &nbsp;/&nbsp; Pago
+        <a href="{% url 'carrito' %}" style="color: #D9A0A0; text-decoration: none;">{{ nav.ck_bc_cart }}</a>
+        &nbsp;/&nbsp; {{ nav.ck_bc_payment }}
     </p>
 </div>
 
@@ -68,19 +67,18 @@
 {% csrf_token %}
 <div class="ck-wrap">
 
-    <!-- ============ IZQUIERDA: FORMULARIO ============ -->
     <div>
 
         <!-- 1. DATOS DE CONTACTO -->
         <div class="ck-section">
             <div class="ck-section-title">
                 <span class="ck-num">1</span>
-                Datos de contacto
+                {{ nav.ck_contact }}
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 16px;">
                 <div class="ck-field">
-                    <label class="ck-label" for="name">Nombre completo *</label>
+                    <label class="ck-label" for="name">{{ nav.ck_fullname }}</label>
                     <input class="ck-input" type="text" id="name" name="name"
                            value="{{ form.name|default:'' }}" placeholder="María García López" required>
                 </div>
@@ -91,7 +89,7 @@
                                value="{{ form.email|default:'' }}" placeholder="maria@ejemplo.com" required>
                     </div>
                     <div class="ck-field">
-                        <label class="ck-label" for="phone">Teléfono</label>
+                        <label class="ck-label" for="phone">{{ nav.ck_phone }}</label>
                         <input class="ck-input" type="tel" id="phone" name="phone"
                                value="{{ form.phone|default:'' }}" placeholder="+34 600 000 000">
                     </div>
@@ -103,38 +101,39 @@
         <div class="ck-section">
             <div class="ck-section-title">
                 <span class="ck-num">2</span>
-                Dirección de envío
+                {{ nav.ck_address }}
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 16px;">
                 <div class="ck-field">
-                    <label class="ck-label" for="street">Calle y número *</label>
+                    <label class="ck-label" for="street">{{ nav.ck_street }}</label>
                     <input class="ck-input" type="text" id="street" name="street"
                            value="{{ form.street|default:'' }}" placeholder="Calle Mayor 12, 3º B" required>
                 </div>
                 <div class="ck-grid-3">
                     <div class="ck-field" style="grid-column: span 2;">
-                        <label class="ck-label" for="city">Ciudad *</label>
+                        <label class="ck-label" for="city">{{ nav.ck_city }}</label>
                         <input class="ck-input" type="text" id="city" name="city"
                                value="{{ form.city|default:'' }}" placeholder="Barcelona" required>
                     </div>
                     <div class="ck-field">
-                        <label class="ck-label" for="postal">Código postal *</label>
+                        <label class="ck-label" for="postal">{{ nav.ck_postal }}</label>
                         <input class="ck-input" type="text" id="postal" name="postal"
                                value="{{ form.postal|default:'' }}" placeholder="08001" required maxlength="10">
                     </div>
                 </div>
                 <div class="ck-field">
-                    <label class="ck-label" for="country">País *</label>
+                    <label class="ck-label" for="country">{{ nav.ck_country }}</label>
                     <select class="ck-input ck-select" id="country" name="country">
                         <option value="ES" {% if form.country == 'ES' or not form.country %}selected{% endif %}>España</option>
                         <option value="PT" {% if form.country == 'PT' %}selected{% endif %}>Portugal</option>
-                        <option value="FR" {% if form.country == 'FR' %}selected{% endif %}>Francia</option>
-                        <option value="DE" {% if form.country == 'DE' %}selected{% endif %}>Alemania</option>
+                        <option value="FR" {% if form.country == 'FR' %}selected{% endif %}>France</option>
+                        <option value="DE" {% if form.country == 'DE' %}selected{% endif %}>Deutschland</option>
                         <option value="IT" {% if form.country == 'IT' %}selected{% endif %}>Italia</option>
-                        <option value="GB" {% if form.country == 'GB' %}selected{% endif %}>Reino Unido</option>
-                        <option value="NL" {% if form.country == 'NL' %}selected{% endif %}>Países Bajos</option>
-                        <option value="BE" {% if form.country == 'BE' %}selected{% endif %}>Bélgica</option>
+                        <option value="GB" {% if form.country == 'GB' %}selected{% endif %}>United Kingdom</option>
+                        <option value="NL" {% if form.country == 'NL' %}selected{% endif %}>Nederland</option>
+                        <option value="BE" {% if form.country == 'BE' %}selected{% endif %}>Belgique</option>
+                        <option value="CZ" {% if form.country == 'CZ' %}selected{% endif %}>Česká republika</option>
                         <option value="MX" {% if form.country == 'MX' %}selected{% endif %}>México</option>
                         <option value="AR" {% if form.country == 'AR' %}selected{% endif %}>Argentina</option>
                     </select>
@@ -146,7 +145,7 @@
         <div class="ck-section">
             <div class="ck-section-title">
                 <span class="ck-num">3</span>
-                Método de pago
+                {{ nav.ck_payment_method }}
             </div>
 
             <div class="ck-pay-options">
@@ -156,8 +155,8 @@
                            {% if form.payment != 'PAYPAL' %}checked{% endif %}>
                     <label class="ck-pay-label" for="pay-stripe">
                         <span class="ck-pay-icon"><i class="fas fa-credit-card" style="color:#7A3E48;"></i></span>
-                        <span class="ck-pay-name">Tarjeta de crédito</span>
-                        <span class="ck-pay-sub">Visa · Mastercard · Amex</span>
+                        <span class="ck-pay-name">{{ nav.ck_card }}</span>
+                        <span class="ck-pay-sub">{{ nav.ck_card_sub }}</span>
                     </label>
                     <div class="ck-pay-check"></div>
                 </div>
@@ -168,60 +167,58 @@
                     <label class="ck-pay-label" for="pay-paypal">
                         <span class="ck-pay-icon"><i class="fab fa-paypal" style="color:#003087;"></i></span>
                         <span class="ck-pay-name">PayPal</span>
-                        <span class="ck-pay-sub">Pago rápido y seguro</span>
+                        <span class="ck-pay-sub">{{ nav.ck_paypal_sub }}</span>
                     </label>
                     <div class="ck-pay-check"></div>
                 </div>
 
             </div>
 
-            <!-- Visual card fields (non-functional, visual only) -->
             <div id="card-fields" style="margin-top: 20px; display: flex; flex-direction: column; gap: 14px;">
                 <div class="ck-field">
-                    <label class="ck-label">Número de tarjeta</label>
+                    <label class="ck-label">{{ nav.ck_card_number }}</label>
                     <input class="ck-input" type="text" placeholder="1234 5678 9012 3456" maxlength="19"
                            oninput="formatCard(this)" autocomplete="cc-number">
                 </div>
                 <div class="ck-grid-2">
                     <div class="ck-field">
-                        <label class="ck-label">Caducidad</label>
+                        <label class="ck-label">{{ nav.ck_expiry }}</label>
                         <input class="ck-input" type="text" placeholder="MM / AA" maxlength="7"
                                oninput="formatExpiry(this)" autocomplete="cc-exp">
                     </div>
                     <div class="ck-field">
-                        <label class="ck-label">CVV</label>
+                        <label class="ck-label">{{ nav.ck_cvv }}</label>
                         <input class="ck-input" type="text" placeholder="•••" maxlength="4"
                                autocomplete="cc-csc">
                     </div>
                 </div>
                 <p style="font-family: Arial, sans-serif; font-size: 10px; color: #aaa; letter-spacing: 0.5px;">
-                    <i class="fas fa-lock"></i> Pago seguro con cifrado SSL. Los datos de tu tarjeta no se almacenan en nuestros servidores.
+                    <i class="fas fa-lock"></i> {{ nav.ck_ssl }}
                 </p>
             </div>
 
             <div id="paypal-msg" style="display:none; margin-top: 20px; background: #f0f4ff; border: 1px solid #c0ccf0; padding: 16px; text-align: center;">
                 <p style="font-family: Arial, sans-serif; font-size: 13px; color: #3355cc;">
-                    Al confirmar el pedido serás redirigida a PayPal para completar el pago de forma segura.
+                    {{ nav.ck_paypal_redirect }}
                 </p>
             </div>
         </div>
 
-        <!-- SUBMIT -->
         <button type="submit" class="ck-btn">
-            <i class="fas fa-lock"></i> &nbsp; Confirmar pedido
+            <i class="fas fa-lock"></i> &nbsp; {{ nav.ck_submit }}
         </button>
 
         <p style="font-family: Arial, sans-serif; font-size: 11px; color: #aaa; text-align: center; margin-top: 14px;">
-            Al confirmar, aceptas nuestros <a href="#" style="color: #D9A0A0;">Términos de venta</a> y
-            <a href="#" style="color: #D9A0A0;">Política de devoluciones</a>.
+            {{ nav.ck_terms }} <a href="#" style="color: #D9A0A0;">{{ nav.ck_terms_link1 }}</a> {{ nav.ck_terms_link2|lower|capfirst }}
+            <a href="#" style="color: #D9A0A0;">{{ nav.ck_terms_link2 }}</a>.
         </p>
 
     </div>
 
-    <!-- ============ DERECHA: RESUMEN ============ -->
+    <!-- RESUMEN -->
     <div>
         <div class="ck-summary">
-            <p style="font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 3px; color: #D9A0A0; margin-bottom: 20px;">RESUMEN DEL PEDIDO</p>
+            <p style="font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 3px; color: #D9A0A0; margin-bottom: 20px;">{{ nav.cart_summary }}</p>
 
             {% for item in items %}
             <div class="ck-sum-item">
@@ -234,7 +231,7 @@
                 </div>
                 <div>
                     <p class="ck-sum-name">{{ item.product|product_name:site_lang }}</p>
-                    <p class="ck-sum-qty">Cantidad: {{ item.qty }}</p>
+                    <p class="ck-sum-qty">{{ nav.ck_qty_label }} {{ item.qty }}</p>
                 </div>
                 <p class="ck-sum-price">{{ item.subtotal|price_display:site_currency }}</p>
             </div>
@@ -242,13 +239,13 @@
 
             <div style="margin-top: 16px; border-top: 1px solid #f0e0e2; padding-top: 16px;">
                 <div class="ck-sum-row">
-                    <span>Subtotal</span>
+                    <span>{{ nav.cart_subtotal }}</span>
                     <span style="font-family: Georgia, serif; color: #2a1c1c;">{{ subtotal|price_display:site_currency }}</span>
                 </div>
                 <div class="ck-sum-row">
-                    <span>Envío</span>
+                    <span>{{ nav.cart_shipping }}</span>
                     {% if shipping_fee == 0 %}
-                        <span style="color: #4a9a4a; font-family: Arial, sans-serif; font-size: 12px;">Gratis <i class="fas fa-gift"></i></span>
+                        <span style="color: #4a9a4a; font-family: Arial, sans-serif; font-size: 12px;">{{ nav.cart_free }} <i class="fas fa-gift"></i></span>
                     {% else %}
                         <span style="font-family: Georgia, serif; color: #2a1c1c;">{{ shipping_fee|price_display:site_currency }}</span>
                     {% endif %}
@@ -256,34 +253,34 @@
             </div>
 
             <div class="ck-sum-total">
-                <span>Total</span>
+                <span>{{ nav.cart_total }}</span>
                 <span>{{ grand_total|price_display:site_currency }}</span>
             </div>
 
             {% if shipping_fee > 0 %}
             <p style="font-family: Arial, sans-serif; font-size: 10px; color: #D9A0A0; text-align: center; margin-top: 12px;">
-                Añade {{ needed_checkout|price_display:site_currency }} más para envío gratuito
+                {{ nav.ck_add_free_pre }}{{ needed_checkout|price_display:site_currency }}{{ nav.ck_add_free_post }}
             </p>
             {% endif %}
 
             <div style="margin-top: 24px; border-top: 1px solid #f0e0e2; padding-top: 20px; display: flex; flex-direction: column; gap: 8px;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span style="color:#7A3E48;"><i class="fas fa-truck"></i></span>
-                    <p style="font-family: Arial, sans-serif; font-size: 11px; color: #888;">Entrega estimada: 2–4 días hábiles</p>
+                    <p style="font-family: Arial, sans-serif; font-size: 11px; color: #888;">{{ nav.ck_delivery_est }}</p>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span style="color:#7A3E48;"><i class="fas fa-box"></i></span>
-                    <p style="font-family: Arial, sans-serif; font-size: 11px; color: #888;">Devolución gratuita en 30 días</p>
+                    <p style="font-family: Arial, sans-serif; font-size: 11px; color: #888;">{{ nav.ck_returns30 }}</p>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span style="color:#7A3E48;"><i class="fas fa-lock"></i></span>
-                    <p style="font-family: Arial, sans-serif; font-size: 11px; color: #888;">Pago 100% seguro</p>
+                    <p style="font-family: Arial, sans-serif; font-size: 11px; color: #888;">{{ nav.ck_secure_pay }}</p>
                 </div>
             </div>
         </div>
 
         <p style="font-family: Arial, sans-serif; font-size: 11px; color: #aaa; text-align: center; margin-top: 14px;">
-            <a href="{% url 'carrito' %}" style="color: #D9A0A0; text-decoration: none;">← Volver al carrito</a>
+            <a href="{% url 'carrito' %}" style="color: #D9A0A0; text-decoration: none;">{{ nav.ck_back_cart }}</a>
         </p>
     </div>
 
@@ -291,7 +288,6 @@
 </form>
 
 <script>
-// Toggle card / PayPal fields
 document.querySelectorAll('input[name="payment"]').forEach(function(radio) {
     radio.addEventListener('change', function() {
         var isCard = this.value === 'STRIPE';
@@ -300,13 +296,11 @@ document.querySelectorAll('input[name="payment"]').forEach(function(radio) {
     });
 });
 
-// Format card number with spaces
 function formatCard(input) {
     var val = input.value.replace(/\D/g, '').substring(0, 16);
     input.value = val.replace(/(.{4})/g, '$1 ').trim();
 }
 
-// Format MM / AA
 function formatExpiry(input) {
     var val = input.value.replace(/\D/g, '').substring(0, 4);
     if (val.length >= 3) val = val.substring(0, 2) + ' / ' + val.substring(2);

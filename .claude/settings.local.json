@@ -31,7 +31,8 @@
       "Bash(python -c \"import playwright; print\\('playwright ok'\\)\")",
       "Bash(python -m playwright install chromium)",
       "Bash(python manage.py makemigrations shop --name add_product_images)",
-      "Bash(python *)"
+      "Bash(python *)",
+      "Bash(git add *)"
     ]
   }
 }

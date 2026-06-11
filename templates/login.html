@@ -1,42 +1,42 @@
 {% extends 'base.html' %}
 
-{% block title %}Iniciar Sesión — Isabella Barcelona{% endblock %}
+{% block title %}{{ nav.login_title }} — Isabella Barcelona{% endblock %}
 
 {% block content %}
 
 <section style="max-width: 460px; margin: 80px auto; padding: 0 40px;">
 
     <div style="text-align: center; margin-bottom: 40px;">
-        <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 4px; color: #D9A0A0; margin-bottom: 12px;">BIENVENIDA</p>
-        <h1 style="font-family: Georgia, serif; font-size: 28px; color: #7A3E48; font-weight: normal;">Iniciar Sesión</h1>
+        <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 4px; color: #D9A0A0; margin-bottom: 12px;">{{ nav.login_welcome }}</p>
+        <h1 style="font-family: Georgia, serif; font-size: 28px; color: #7A3E48; font-weight: normal;">{{ nav.login_title }}</h1>
     </div>
 
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
 
         <div style="margin-bottom: 20px;">
-            <label style="display: block; font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 2px; color: #7A3E48; margin-bottom: 8px;">USUARIO O EMAIL</label>
+            <label style="display: block; font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 2px; color: #7A3E48; margin-bottom: 8px;">{{ nav.login_user_label }}</label>
             <input type="text" name="username" required autofocus
                 style="width: 100%; border: 1px solid #D9A0A0; padding: 12px 16px; font-family: Georgia, serif; font-size: 14px; color: #2a1c1c; background: #FCFAF8; outline: none; transition: border-color 0.2s;"
                 onfocus="this.style.borderColor='#7A3E48'" onblur="this.style.borderColor='#D9A0A0'">
         </div>
 
         <div style="margin-bottom: 28px;">
-            <label style="display: block; font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 2px; color: #7A3E48; margin-bottom: 8px;">CONTRASEÑA</label>
+            <label style="display: block; font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 2px; color: #7A3E48; margin-bottom: 8px;">{{ nav.login_pass_label }}</label>
             <input type="password" name="password" required
                 style="width: 100%; border: 1px solid #D9A0A0; padding: 12px 16px; font-family: Georgia, serif; font-size: 14px; color: #2a1c1c; background: #FCFAF8; outline: none; transition: border-color 0.2s;"
                 onfocus="this.style.borderColor='#7A3E48'" onblur="this.style.borderColor='#D9A0A0'">
         </div>
 
         <button type="submit" style="width: 100%; background: #7A3E48; color: #FCFAF8; border: none; padding: 16px; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer;">
-            Entrar
+            {{ nav.login_btn }}
         </button>
 
     </form>
 
     <div style="text-align: center; margin-top: 32px; padding-top: 28px; border-top: 1px solid #f0e0e2;">
-        <p style="font-family: Arial, sans-serif; font-size: 13px; color: #888; margin-bottom: 12px;">¿Aún no tienes cuenta?</p>
-        <a href="{% url 'register' %}" style="font-family: Arial, sans-serif; font-size: 12px; color: #7A3E48; text-decoration: none; letter-spacing: 2px; border-bottom: 1px solid #D9A0A0; padding-bottom: 2px;">CREAR CUENTA</a>
+        <p style="font-family: Arial, sans-serif; font-size: 13px; color: #888; margin-bottom: 12px;">{{ nav.login_no_account }}</p>
+        <a href="{% url 'register' %}" style="font-family: Arial, sans-serif; font-size: 12px; color: #7A3E48; text-decoration: none; letter-spacing: 2px; border-bottom: 1px solid #D9A0A0; padding-bottom: 2px;">{{ nav.login_create }}</a>
     </div>
 
 </section>

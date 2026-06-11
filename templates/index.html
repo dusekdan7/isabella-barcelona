@@ -18,9 +18,9 @@
         : (function() { var v = Date.now() + 13*3600000 + 3*60000; sessionStorage.setItem(k, String(v)); return v; })();
 
     var msgs = [
-        '<i class="fas fa-truck"></i> Envío gratis a partir de €100',
-        '<i class="fas fa-clock"></i> Oferta limitada — hasta -50%',
-        '<i class="fas fa-star"></i> +2.000 clientas satisfechas · Valoración 4.9'
+        '<i class="fas fa-truck"></i> {{ nav.ann_msg1 }}',
+        '<i class="fas fa-clock"></i> {{ nav.ann_msg2 }}',
+        '<i class="fas fa-star"></i> {{ nav.ann_msg3 }}'
     ];
     var idx = 0;
     var bar = document.getElementById('ib-ann-bar');
@@ -37,53 +37,53 @@
 
 <!-- HERO BANNER -->
 <section style="background: linear-gradient(135deg, #7A3E48 0%, #D9A0A0 100%); padding: 100px 40px; text-align: center; color: #FCFAF8;">
-    <p style="font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px;">Nueva Colección 2026</p>
+    <p style="font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px;">{{ nav.hero_new_collection }}</p>
     <h1 style="font-family: Georgia, serif; font-size: 52px; font-weight: normal; letter-spacing: 4px; margin-bottom: 20px;">Isabella Barcelona</h1>
-    <p style="font-size: 16px; margin-bottom: 36px; font-style: italic; color: #f5e8ea;">Joyería femenina · Elegancia mediterránea</p>
-    <a href="/coleccion/" style="background: #FCFAF8; color: #7A3E48; padding: 14px 40px; text-decoration: none; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;">VER COLECCIÓN</a>
+    <p style="font-size: 16px; margin-bottom: 36px; font-style: italic; color: #f5e8ea;">{{ nav.hero_tagline }}</p>
+    <a href="/coleccion/" style="background: #FCFAF8; color: #7A3E48; padding: 14px 40px; text-decoration: none; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;">{{ nav.hero_cta }}</a>
 </section>
 
-<!-- KULATÉ KATEGORIE -->
+<!-- KATEGORIE -->
 <section style="padding: 60px 40px; text-align: center; background: #FCFAF8;">
-    <h2 style="font-family: Georgia, serif; font-size: 28px; color: #7A3E48; margin-bottom: 8px; font-weight: normal;">Nuestras Categorías</h2>
-    <p style="color: #D9A0A0; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; margin-bottom: 40px;">DESCUBRE NUESTRA COLECCIÓN</p>
+    <h2 style="font-family: Georgia, serif; font-size: 28px; color: #7A3E48; margin-bottom: 8px; font-weight: normal;">{{ nav.cats_title }}</h2>
+    <p style="color: #D9A0A0; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; margin-bottom: 40px;">{{ nav.cats_sub }}</p>
 
     <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap;">
         <a href="/coleccion/" style="text-decoration: none; text-align: center;">
             <div style="width: 110px; height: 110px; border-radius: 50%; background: linear-gradient(135deg, #f5eaec, #D9A0A0); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 36px; color: #7A3E48;"><i class="fas fa-ring"></i></div>
-            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #2a1c1c; text-transform: uppercase;">Todos</p>
+            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #2a1c1c; text-transform: uppercase;">{{ nav.cat_all }}</p>
         </a>
         <a href="/coleccion/?category=PENDIENTES" style="text-decoration: none; text-align: center;">
             <div style="width: 110px; height: 110px; border-radius: 50%; background: linear-gradient(135deg, #f5eaec, #D9A0A0); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 36px; color: #7A3E48;"><i class="fas fa-star"></i></div>
-            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #2a1c1c; text-transform: uppercase;">Pendientes</p>
+            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #2a1c1c; text-transform: uppercase;">{{ nav.nav_pendientes }}</p>
         </a>
         <a href="/coleccion/?category=COLLARES" style="text-decoration: none; text-align: center;">
             <div style="width: 110px; height: 110px; border-radius: 50%; background: linear-gradient(135deg, #f5eaec, #D9A0A0); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 36px; color: #7A3E48;"><i class="fas fa-link"></i></div>
-            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #2a1c1c; text-transform: uppercase;">Collares</p>
+            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #2a1c1c; text-transform: uppercase;">{{ nav.nav_collares }}</p>
         </a>
         <a href="/coleccion/?category=ANILLOS" style="text-decoration: none; text-align: center;">
             <div style="width: 110px; height: 110px; border-radius: 50%; background: linear-gradient(135deg, #f5eaec, #D9A0A0); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 36px; color: #7A3E48;"><i class="fas fa-gem"></i></div>
-            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #2a1c1c; text-transform: uppercase;">Anillos</p>
+            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #2a1c1c; text-transform: uppercase;">{{ nav.nav_anillos }}</p>
         </a>
         <a href="/coleccion/?category=BRAZALETES" style="text-decoration: none; text-align: center;">
             <div style="width: 110px; height: 110px; border-radius: 50%; background: linear-gradient(135deg, #f5eaec, #D9A0A0); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 36px; color: #7A3E48;"><i class="fas fa-circle"></i></div>
-            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #2a1c1c; text-transform: uppercase;">Brazaletes</p>
+            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #2a1c1c; text-transform: uppercase;">{{ nav.nav_brazaletes }}</p>
         </a>
     </div>
 </section>
 
-<!-- ODPOČÍTÁVÁNÍ -->
+<!-- COUNTDOWN -->
 <section style="background: #f5eaec; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
     <div>
-        <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #7A3E48; margin-bottom: 4px;">OFERTA LIMITADA</p>
-        <p style="font-family: Georgia, serif; font-size: 18px; color: #2a1c1c;">Hasta -50% en toda la colección</p>
+        <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #7A3E48; margin-bottom: 4px;">{{ nav.offer_label }}</p>
+        <p style="font-family: Georgia, serif; font-size: 18px; color: #2a1c1c;">{{ nav.offer_text }}</p>
     </div>
     <div style="display: flex; gap: 16px; text-align: center;">
-        <div><span id="hours" style="font-family: Georgia, serif; font-size: 32px; color: #7A3E48;">00</span><p style="font-family: Arial, sans-serif; font-size: 10px; color: #D9A0A0; letter-spacing: 2px;">HORAS</p></div>
+        <div><span id="hours" style="font-family: Georgia, serif; font-size: 32px; color: #7A3E48;">00</span><p style="font-family: Arial, sans-serif; font-size: 10px; color: #D9A0A0; letter-spacing: 2px;">{{ nav.time_hours }}</p></div>
         <div style="font-size: 32px; color: #D9A0A0; padding-top: 4px;">:</div>
-        <div><span id="minutes" style="font-family: Georgia, serif; font-size: 32px; color: #7A3E48;">00</span><p style="font-family: Arial, sans-serif; font-size: 10px; color: #D9A0A0; letter-spacing: 2px;">MIN</p></div>
+        <div><span id="minutes" style="font-family: Georgia, serif; font-size: 32px; color: #7A3E48;">00</span><p style="font-family: Arial, sans-serif; font-size: 10px; color: #D9A0A0; letter-spacing: 2px;">{{ nav.time_min }}</p></div>
         <div style="font-size: 32px; color: #D9A0A0; padding-top: 4px;">:</div>
-        <div><span id="seconds" style="font-family: Georgia, serif; font-size: 32px; color: #7A3E48;">00</span><p style="font-family: Arial, sans-serif; font-size: 10px; color: #D9A0A0; letter-spacing: 2px;">SEG</p></div>
+        <div><span id="seconds" style="font-family: Georgia, serif; font-size: 32px; color: #7A3E48;">00</span><p style="font-family: Arial, sans-serif; font-size: 10px; color: #D9A0A0; letter-spacing: 2px;">{{ nav.time_seg }}</p></div>
     </div>
 </section>
 
@@ -103,8 +103,8 @@
 
 <!-- PRODUKTY -->
 <section style="padding: 60px 40px;">
-    <h2 style="font-family: Georgia, serif; font-size: 28px; color: #7A3E48; margin-bottom: 8px; font-weight: normal; text-align: center;">Más Vendidos</h2>
-    <p style="color: #D9A0A0; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; margin-bottom: 40px; text-align: center;">NUESTROS FAVORITOS</p>
+    <h2 style="font-family: Georgia, serif; font-size: 28px; color: #7A3E48; margin-bottom: 8px; font-weight: normal; text-align: center;">{{ nav.bestsellers_title }}</h2>
+    <p style="color: #D9A0A0; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; margin-bottom: 40px; text-align: center;">{{ nav.bestsellers_sub }}</p>
 
     <div class="ib-product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto;">
         {% for product in products %}
@@ -113,7 +113,7 @@
 
             <div class="ib-img-wrap" style="height: 220px; display: flex; align-items: center; justify-content: center;">
                 {% if product.is_on_sale %}
-                <span style="position: absolute; top: 10px; left: 10px; z-index: 2; background: #D9A0A0; color: #fff; padding: 4px 10px; font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 1px;">OFERTA</span>
+                <span style="position: absolute; top: 10px; left: 10px; z-index: 2; background: #D9A0A0; color: #fff; padding: 4px 10px; font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 1px;">{{ nav.sale_badge }}</span>
                 {% endif %}
                 {% if product.image_url %}
                     <img src="{{ product.image_url }}" alt="{{ product|product_name:site_lang }}" loading="lazy">
@@ -125,14 +125,14 @@
                         {% csrf_token %}
                         <input type="hidden" name="qty" value="1">
                         <input type="hidden" name="next" value="{{ request.path }}">
-                        <button type="submit" class="ib-quick-add-btn">＋ Añadir</button>
+                        <button type="submit" class="ib-quick-add-btn">{{ nav.btn_add }}</button>
                     </form>
                 </div>
             </div>
 
             <button class="ib-wish-btn" data-wish-id="{{ product.id }}"
                     onclick="ibToggleWishlist('{{ product.id }}', this)"
-                    title="Añadir a favoritos">&#9825;</button>
+                    title="{{ nav.pd_acc_details }}">&#9825;</button>
 
             <div class="ib-card-info">
                 <p style="font-family: Arial, sans-serif; font-size: 10px; color: #D9A0A0; letter-spacing: 2px; margin-bottom: 6px;">{{ product.get_category_display }}</p>
@@ -149,22 +149,22 @@
     </div>
 </section>
 
-<!-- OSOBNÍ PŘÍBĚH -->
+<!-- PŘÍBĚH -->
 <section style="padding: 80px 40px; max-width: 800px; margin: 0 auto; text-align: center;">
-    <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 4px; color: #D9A0A0; margin-bottom: 20px;">NUESTRA HISTORIA</p>
-    <h2 style="font-family: Georgia, serif; font-size: 32px; color: #7A3E48; font-weight: normal; margin-bottom: 30px;">Lo que nunca te he contado</h2>
-    <p style="font-family: Georgia, serif; font-size: 15px; line-height: 1.9; color: #555; margin-bottom: 16px;">Hace unos años, algo cambió en mi vida. Me di cuenta de que cada mujer merece sentirse especial cada día — no solo en las ocasiones grandes, sino en los momentos pequeños del día a día.</p>
-    <p style="font-family: Georgia, serif; font-size: 15px; line-height: 1.9; color: #555; margin-bottom: 16px;">Por eso decidí crear Isabella Barcelona. Cada pieza está elegida con cuidado, para que te acompañe en tus momentos preciosos — desde el café de la mañana hasta la cena con amigas.</p>
-    <p style="font-family: Georgia, serif; font-size: 15px; line-height: 1.9; color: #555; margin-bottom: 30px;">Esto no es una estrategia de marketing. Es simplemente mi manera de decirte gracias — a cada una de vosotras que me habéis dado vuestra confianza.</p>
-    <p style="font-family: Georgia, serif; font-size: 16px; color: #7A3E48; font-style: italic;">Con amor, Isabella <i class="fas fa-ring"></i></p>
+    <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 4px; color: #D9A0A0; margin-bottom: 20px;">{{ nav.story_label }}</p>
+    <h2 style="font-family: Georgia, serif; font-size: 32px; color: #7A3E48; font-weight: normal; margin-bottom: 30px;">{{ nav.story_title }}</h2>
+    <p style="font-family: Georgia, serif; font-size: 15px; line-height: 1.9; color: #555; margin-bottom: 16px;">{{ nav.story_p1 }}</p>
+    <p style="font-family: Georgia, serif; font-size: 15px; line-height: 1.9; color: #555; margin-bottom: 16px;">{{ nav.story_p2 }}</p>
+    <p style="font-family: Georgia, serif; font-size: 15px; line-height: 1.9; color: #555; margin-bottom: 30px;">{{ nav.story_p3 }}</p>
+    <p style="font-family: Georgia, serif; font-size: 16px; color: #7A3E48; font-style: italic;">{{ nav.story_sign }} <i class="fas fa-ring"></i></p>
 </section>
 
 <!-- RECENZE -->
 <section style="padding: 60px 40px; background: #f5eaec; text-align: center;">
-    <h2 style="font-family: Georgia, serif; font-size: 28px; color: #7A3E48; font-weight: normal; margin-bottom: 8px;">Opiniones Verificadas</h2>
-    <p style="color: #D9A0A0; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; margin-bottom: 8px;">NUESTRAS CLIENTAS</p>
+    <h2 style="font-family: Georgia, serif; font-size: 28px; color: #7A3E48; font-weight: normal; margin-bottom: 8px;">{{ nav.reviews_title }}</h2>
+    <p style="color: #D9A0A0; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; margin-bottom: 8px;">{{ nav.reviews_sub }}</p>
     <p style="font-family: Georgia, serif; font-size: 36px; color: #7A3E48;">4.9 ★★★★★</p>
-    <p style="font-family: Arial, sans-serif; font-size: 12px; color: #aaa; margin-bottom: 40px;">+2.000 reseñas verificadas</p>
+    <p style="font-family: Arial, sans-serif; font-size: 12px; color: #aaa; margin-bottom: 40px;">{{ nav.reviews_count }}</p>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto;">
         {% for review in reviews %}
@@ -185,8 +185,8 @@
 <!-- FAQ -->
 <section style="padding: 80px 40px; background: #FCFAF8;">
     <div style="max-width: 760px; margin: 0 auto;">
-        <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 4px; color: #D9A0A0; text-align: center; margin-bottom: 12px;">PREGUNTAS FRECUENTES</p>
-        <h2 style="font-family: Georgia, serif; font-size: 32px; color: #7A3E48; font-weight: normal; margin-bottom: 48px; text-align: center;">¿Tienes alguna duda?</h2>
+        <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 4px; color: #D9A0A0; text-align: center; margin-bottom: 12px;">{{ nav.faq_label }}</p>
+        <h2 style="font-family: Georgia, serif; font-size: 32px; color: #7A3E48; font-weight: normal; margin-bottom: 48px; text-align: center;">{{ nav.faq_title }}</h2>
 
         <style>
             .ib-faq-item { border: 1px solid #f0e0e2; margin-bottom: 12px; background: #fff; }
@@ -211,10 +211,7 @@
             .ib-faq-btn.active .ib-faq-icon {
                 background: #7A3E48; border-color: #7A3E48; color: #fff; transform: rotate(45deg);
             }
-            .ib-faq-body {
-                max-height: 0; overflow: hidden;
-                transition: max-height 0.35s ease, padding 0.25s ease;
-            }
+            .ib-faq-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.25s ease; }
             .ib-faq-body.open { max-height: 300px; }
             .ib-faq-body-inner {
                 padding: 0 28px 24px;
@@ -224,82 +221,47 @@
             .ib-faq-body.open .ib-faq-body-inner { padding-top: 20px; }
         </style>
 
-        <!-- 1. Envío -->
         <div class="ib-faq-item">
             <button class="ib-faq-btn" onclick="ibToggleFaq(this)" aria-expanded="false">
-                <span class="ib-faq-question">¿Cuánto tarda el envío y cuánto cuesta?</span>
+                <span class="ib-faq-question">{{ nav.faq_q1 }}</span>
                 <span class="ib-faq-icon">+</span>
             </button>
-            <div class="ib-faq-body">
-                <div class="ib-faq-body-inner">
-                    Los pedidos se envían en 24–48 h laborables desde Barcelona. El envío estándar a España Peninsula tarda entre 2 y 4 días hábiles y tiene un coste de <strong>€3,90</strong>. A partir de <strong>€100 de compra, el envío es completamente gratuito</strong>. Para Baleares, Canarias y Europa el plazo es de 5–8 días hábiles. Recibirás un número de seguimiento por email en cuanto tu pedido salga de nuestro almacén.
-                </div>
-            </div>
+            <div class="ib-faq-body"><div class="ib-faq-body-inner">{{ nav.faq_a1 }}</div></div>
         </div>
-
-        <!-- 2. Devoluciones -->
         <div class="ib-faq-item">
             <button class="ib-faq-btn" onclick="ibToggleFaq(this)" aria-expanded="false">
-                <span class="ib-faq-question">¿Puedo devolver o cambiar mi pedido?</span>
+                <span class="ib-faq-question">{{ nav.faq_q2 }}</span>
                 <span class="ib-faq-icon">+</span>
             </button>
-            <div class="ib-faq-body">
-                <div class="ib-faq-body-inner">
-                    Sí, tienes <strong>30 días desde la recepción</strong> para devolver cualquier artículo sin necesidad de justificación. La devolución es gratuita: simplemente escríbenos a <em>hola@isabellabcn.com</em> y te enviaremos una etiqueta de devolución prepagada. El reembolso se realiza en el mismo método de pago en un plazo de 3–5 días hábiles. Los artículos deben estar sin usar y con su embalaje original.
-                </div>
-            </div>
+            <div class="ib-faq-body"><div class="ib-faq-body-inner">{{ nav.faq_a2 }}</div></div>
         </div>
-
-        <!-- 3. Materiales -->
         <div class="ib-faq-item">
             <button class="ib-faq-btn" onclick="ibToggleFaq(this)" aria-expanded="false">
-                <span class="ib-faq-question">¿Qué materiales usáis en vuestras joyas?</span>
+                <span class="ib-faq-question">{{ nav.faq_q3 }}</span>
                 <span class="ib-faq-icon">+</span>
             </button>
-            <div class="ib-faq-body">
-                <div class="ib-faq-body-inner">
-                    Trabajamos exclusivamente con materiales de alta calidad hipoalergénicos. Nuestras piezas están fabricadas en <strong>plata de ley 925</strong>, <strong>acero inoxidable 316L</strong> y <strong>plata bañada en oro real de 14k o en oro rosa</strong>. No utilizamos níquel ni plomo. Todas las piedras son zircónitas de alta calidad. Nuestras joyas están diseñadas para resistir el contacto con el agua, el sudor y el calor del día a día.
-                </div>
-            </div>
+            <div class="ib-faq-body"><div class="ib-faq-body-inner">{{ nav.faq_a3 }}</div></div>
         </div>
-
-        <!-- 4. Tallas -->
         <div class="ib-faq-item">
             <button class="ib-faq-btn" onclick="ibToggleFaq(this)" aria-expanded="false">
-                <span class="ib-faq-question">¿Cómo sé qué talla de anillo elegir?</span>
+                <span class="ib-faq-question">{{ nav.faq_q4 }}</span>
                 <span class="ib-faq-icon">+</span>
             </button>
-            <div class="ib-faq-body">
-                <div class="ib-faq-body-inner">
-                    La manera más sencilla es medir el diámetro interior de un anillo que ya te quede bien: <strong>talla 48 = 15,3 mm · talla 50 = 15,9 mm · talla 52 = 16,5 mm · talla 54 = 17,2 mm · talla 56 = 17,8 mm</strong>. Si estás entre dos tallas, te recomendamos elegir la mayor. Muchos de nuestros anillos son ajustables y se adaptan a casi cualquier dedo. Si tienes dudas, nuestro equipo estará encantado de ayudarte por chat o email.
-                </div>
-            </div>
+            <div class="ib-faq-body"><div class="ib-faq-body-inner">{{ nav.faq_a4 }}</div></div>
         </div>
-
-        <!-- 5. Pago -->
         <div class="ib-faq-item">
             <button class="ib-faq-btn" onclick="ibToggleFaq(this)" aria-expanded="false">
-                <span class="ib-faq-question">¿Qué métodos de pago aceptáis?</span>
+                <span class="ib-faq-question">{{ nav.faq_q5 }}</span>
                 <span class="ib-faq-icon">+</span>
             </button>
-            <div class="ib-faq-body">
-                <div class="ib-faq-body-inner">
-                    Aceptamos <strong>tarjeta de crédito y débito</strong> (Visa, Mastercard, American Express), <strong>PayPal</strong> y <strong>pago contra reembolso</strong> (+€2,50). Todos los pagos con tarjeta se procesan a través de <strong>Stripe</strong>, con cifrado SSL de extremo a extremo. No almacenamos ningún dato bancario en nuestros servidores. El cobro se realiza en el momento de confirmar el pedido.
-                </div>
-            </div>
+            <div class="ib-faq-body"><div class="ib-faq-body-inner">{{ nav.faq_a5 }}</div></div>
         </div>
-
-        <!-- 6. Cuidado -->
         <div class="ib-faq-item">
             <button class="ib-faq-btn" onclick="ibToggleFaq(this)" aria-expanded="false">
-                <span class="ib-faq-question">¿Cómo cuido correctamente mis joyas?</span>
+                <span class="ib-faq-question">{{ nav.faq_q6 }}</span>
                 <span class="ib-faq-icon">+</span>
             </button>
-            <div class="ib-faq-body">
-                <div class="ib-faq-body-inner">
-                    Para mantener el brillo de tus joyas por más tiempo: <strong>1)</strong> Guárdalas en la cajita o bolsita que recibirás con tu pedido para evitar roces. <strong>2)</strong> Evita el contacto directo con perfumes, cremas y productos de belleza — póntelas siempre la última. <strong>3)</strong> Límpialas con un paño suave y seco. <strong>4)</strong> Aunque nuestras joyas son resistentes al agua, te recomendamos quitártelas antes de nadar en el mar o en cloro. Con estos sencillos cuidados durarán años en perfecto estado.
-                </div>
-            </div>
+            <div class="ib-faq-body"><div class="ib-faq-body-inner">{{ nav.faq_a6 }}</div></div>
         </div>
 
     </div>
@@ -309,13 +271,11 @@
     function ibToggleFaq(btn) {
         var body = btn.nextElementSibling;
         var isOpen = body.classList.contains('open');
-        // Close all
         document.querySelectorAll('.ib-faq-body.open').forEach(function(b) {
             b.classList.remove('open');
             b.previousElementSibling.classList.remove('active');
             b.previousElementSibling.setAttribute('aria-expanded', 'false');
         });
-        // Open clicked if it was closed
         if (!isOpen) {
             body.classList.add('open');
             btn.classList.add('active');

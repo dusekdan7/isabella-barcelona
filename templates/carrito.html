@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load shop_extras %}
 
-{% block title %}Carrito — Isabella Barcelona{% endblock %}
+{% block title %}{{ nav.cart_title }} — Isabella Barcelona{% endblock %}
 
 {% block content %}
 
 <section style="max-width: 1100px; margin: 60px auto; padding: 0 40px;">
 
-    <h1 style="font-family: Georgia, serif; font-size: 28px; color: #7A3E48; font-weight: normal; margin-bottom: 40px; letter-spacing: 2px;">Tu Carrito</h1>
+    <h1 style="font-family: Georgia, serif; font-size: 28px; color: #7A3E48; font-weight: normal; margin-bottom: 40px; letter-spacing: 2px;">{{ nav.cart_title }}</h1>
 
     {% if items %}
 
@@ -18,22 +18,19 @@
             {% for item in items %}
             <div style="display: grid; grid-template-columns: 100px 1fr auto; gap: 24px; align-items: center; padding: 24px 0; border-bottom: 1px solid #f0e0e2;">
 
-                <!-- Imagen -->
                 <div style="background: linear-gradient(135deg, #f5eaec, #FCFAF8); height: 100px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
                     {% if item.product.image_url %}
-                        <img src="{{ item.product.image_url }}" alt="{{ item.product.name_es }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        <img src="{{ item.product.image_url }}" alt="{{ item.product|product_name:site_lang }}" style="width: 100%; height: 100%; object-fit: cover;">
                     {% else %}
                         <i class="fas fa-ring" style="font-size: 36px; color: #D9A0A0;"></i>
                     {% endif %}
                 </div>
 
-                <!-- Info -->
                 <div>
                     <p style="font-family: Arial, sans-serif; font-size: 10px; color: #D9A0A0; letter-spacing: 3px; margin-bottom: 6px;">{{ item.product.get_category_display|upper }}</p>
                     <p style="font-family: Georgia, serif; font-size: 16px; color: #2a1c1c; margin-bottom: 10px;">{{ item.product|product_name:site_lang }}</p>
                     <p style="font-family: Georgia, serif; font-size: 15px; color: #7A3E48; margin-bottom: 16px;">{{ item.product.price|price_display:site_currency }}</p>
 
-                    <!-- Cantidad -->
                     <form method="post" action="{% url 'update_cart' item.product.id %}" style="display: flex; align-items: center; gap: 12px;">
                         {% csrf_token %}
                         <div style="display: flex; align-items: center; border: 1px solid #D9A0A0;">
@@ -42,72 +39,69 @@
                                 style="width: 42px; border: none; border-left: 1px solid #D9A0A0; border-right: 1px solid #D9A0A0; padding: 6px 0; text-align: center; font-family: Georgia, serif; font-size: 14px; color: #2a1c1c; background: transparent; outline: none;">
                             <button type="button" onclick="changeQty(this, 1)" style="background: none; border: none; padding: 6px 12px; cursor: pointer; font-size: 16px; color: #7A3E48;">+</button>
                         </div>
-                        <button type="submit" style="background: none; border: none; font-family: Arial, sans-serif; font-size: 11px; color: #7A3E48; cursor: pointer; letter-spacing: 1px; text-decoration: underline; text-underline-offset: 3px;">Actualizar</button>
+                        <button type="submit" style="background: none; border: none; font-family: Arial, sans-serif; font-size: 11px; color: #7A3E48; cursor: pointer; letter-spacing: 1px; text-decoration: underline; text-underline-offset: 3px;">{{ nav.cart_update }}</button>
                     </form>
                 </div>
 
-                <!-- Subtotal + eliminar -->
                 <div style="text-align: right;">
                     <p style="font-family: Georgia, serif; font-size: 17px; color: #7A3E48; font-weight: bold; margin-bottom: 12px;">{{ item.subtotal|price_display:site_currency }}</p>
                     <a href="{% url 'remove_from_cart' item.product.id %}"
-                       style="font-family: Arial, sans-serif; font-size: 11px; color: #aaa; text-decoration: none; letter-spacing: 1px;"
-                       title="Eliminar">✕ Eliminar</a>
+                       style="font-family: Arial, sans-serif; font-size: 11px; color: #aaa; text-decoration: none; letter-spacing: 1px;">{{ nav.cart_remove }}</a>
                 </div>
 
             </div>
             {% endfor %}
 
-            <!-- Continuar comprando -->
             <div style="margin-top: 24px;">
-                <a href="{% url 'coleccion' %}" style="font-family: Arial, sans-serif; font-size: 12px; color: #7A3E48; text-decoration: none; letter-spacing: 1px;">← Continuar comprando</a>
+                <a href="{% url 'coleccion' %}" style="font-family: Arial, sans-serif; font-size: 12px; color: #7A3E48; text-decoration: none; letter-spacing: 1px;">{{ nav.cart_continue }}</a>
             </div>
         </div>
 
         <!-- RESUMEN -->
         <div style="background: #fff; border: 1px solid #f0e0e2; padding: 32px; position: sticky; top: 90px;">
-            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; color: #D9A0A0; margin-bottom: 24px;">RESUMEN DEL PEDIDO</p>
+            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; color: #D9A0A0; margin-bottom: 24px;">{{ nav.cart_summary }}</p>
 
             <div style="display: flex; justify-content: space-between; margin-bottom: 14px;">
-                <span style="font-family: Arial, sans-serif; font-size: 13px; color: #666;">Subtotal</span>
+                <span style="font-family: Arial, sans-serif; font-size: 13px; color: #666;">{{ nav.cart_subtotal }}</span>
                 <span style="font-family: Georgia, serif; font-size: 14px; color: #2a1c1c;">{{ total|price_display:site_currency }}</span>
             </div>
 
             <div style="display: flex; justify-content: space-between; margin-bottom: 14px;">
-                <span style="font-family: Arial, sans-serif; font-size: 13px; color: #666;">Envío</span>
+                <span style="font-family: Arial, sans-serif; font-size: 13px; color: #666;">{{ nav.cart_shipping }}</span>
                 <span style="font-family: Arial, sans-serif; font-size: 13px; color: #4a9a4a;">
-                    {% if total >= 100 %}Gratis{% else %}Calculado al pagar{% endif %}
+                    {% if total >= 100 %}{{ nav.cart_free }}{% else %}{{ nav.cart_calculated }}{% endif %}
                 </span>
             </div>
 
             <div style="border-top: 1px solid #f0e0e2; margin: 20px 0; padding-top: 20px; display: flex; justify-content: space-between;">
-                <span style="font-family: Arial, sans-serif; font-size: 14px; color: #2a1c1c; font-weight: bold;">Total</span>
+                <span style="font-family: Arial, sans-serif; font-size: 14px; color: #2a1c1c; font-weight: bold;">{{ nav.cart_total }}</span>
                 <span style="font-family: Georgia, serif; font-size: 20px; color: #7A3E48; font-weight: bold;">{{ total|price_display:site_currency }}</span>
             </div>
 
             {% if total < 100 %}
             <div style="background: linear-gradient(135deg, #fdf5f6, #fff9f9); border: 1px solid #f0d0d4; padding: 16px; margin-bottom: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                    <span style="font-family: Arial, sans-serif; font-size: 11px; color: #7A3E48; font-weight: 600; letter-spacing: 0.5px;"><i class="fas fa-truck"></i> Envío gratuito</span>
+                    <span style="font-family: Arial, sans-serif; font-size: 11px; color: #7A3E48; font-weight: 600; letter-spacing: 0.5px;"><i class="fas fa-truck"></i> {{ nav.cart_free_label }}</span>
                     <span style="font-family: Arial, sans-serif; font-size: 11px; color: #B08080;">{{ total|price_display:site_currency }} / {{ free_threshold|price_display:site_currency }}</span>
                 </div>
                 <div style="background: #f0d0d4; border-radius: 20px; height: 8px; overflow: hidden; margin-bottom: 8px;">
                     <div style="background: linear-gradient(90deg, #D9A0A0, #7A3E48); height: 8px; border-radius: 20px; width: {% widthratio total 100 100 %}%; transition: width 0.6s ease;"></div>
                 </div>
                 <p style="font-family: Arial, sans-serif; font-size: 12px; color: #7A3E48; text-align: center; margin: 0;">
-                    ¡Añade <strong>{{ needed|price_display:site_currency }}</strong> más para envío gratuito!
+                    {{ nav.cart_free_pre }}<strong>{{ needed|price_display:site_currency }}</strong>{{ nav.cart_free_post }}
                 </p>
             </div>
             {% else %}
             <div style="background: linear-gradient(135deg, #edf7ed, #f5fff5); border: 1px solid #b2dfb2; padding: 12px 16px; margin-bottom: 20px; text-align: center;">
-                <p style="font-family: Arial, sans-serif; font-size: 12px; color: #2a7a4a; margin: 0;"><i class="fas fa-check-circle"></i> ¡Envío gratuito aplicado! <i class="fas fa-truck"></i></p>
+                <p style="font-family: Arial, sans-serif; font-size: 12px; color: #2a7a4a; margin: 0;"><i class="fas fa-check-circle"></i> {{ nav.cart_free_applied }} <i class="fas fa-truck"></i></p>
             </div>
             {% endif %}
 
-            <a href="{% url 'checkout' %}" style="display: block; background: #7A3E48; color: #FCFAF8; padding: 16px; text-align: center; text-decoration: none; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px;">Finalizar Compra</a>
+            <a href="{% url 'checkout' %}" style="display: block; background: #7A3E48; color: #FCFAF8; padding: 16px; text-align: center; text-decoration: none; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px;">{{ nav.cart_checkout }}</a>
 
             <div style="display: flex; justify-content: center; gap: 16px; margin-top: 20px;">
-                <span style="font-family: Arial, sans-serif; font-size: 11px; color: #aaa;"><i class="fas fa-lock"></i> Pago seguro</span>
-                <span style="font-family: Arial, sans-serif; font-size: 11px; color: #aaa;"><i class="fas fa-box"></i> Devolución gratuita</span>
+                <span style="font-family: Arial, sans-serif; font-size: 11px; color: #aaa;"><i class="fas fa-lock"></i> {{ nav.cart_secure }}</span>
+                <span style="font-family: Arial, sans-serif; font-size: 11px; color: #aaa;"><i class="fas fa-box"></i> {{ nav.cart_returns }}</span>
             </div>
         </div>
 
@@ -115,12 +109,11 @@
 
     {% else %}
 
-    <!-- CARRITO VACÍO -->
     <div style="text-align: center; padding: 80px 40px;">
         <p style="font-size: 64px; margin-bottom: 24px; color: #D9A0A0;"><i class="fas fa-shopping-cart"></i></p>
-        <h2 style="font-family: Georgia, serif; font-size: 24px; color: #7A3E48; font-weight: normal; margin-bottom: 16px;">Tu carrito está vacío</h2>
-        <p style="font-family: Arial, sans-serif; font-size: 14px; color: #888; margin-bottom: 36px;">Descubre nuestra colección y encuentra la joya perfecta para ti.</p>
-        <a href="{% url 'coleccion' %}" style="display: inline-block; background: #7A3E48; color: #FCFAF8; padding: 16px 40px; text-decoration: none; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;">Ver Colección</a>
+        <h2 style="font-family: Georgia, serif; font-size: 24px; color: #7A3E48; font-weight: normal; margin-bottom: 16px;">{{ nav.cart_empty_title }}</h2>
+        <p style="font-family: Arial, sans-serif; font-size: 14px; color: #888; margin-bottom: 36px;">{{ nav.cart_empty_text }}</p>
+        <a href="{% url 'coleccion' %}" style="display: inline-block; background: #7A3E48; color: #FCFAF8; padding: 16px 40px; text-decoration: none; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;">{{ nav.cart_empty_cta }}</a>
     </div>
 
     {% endif %}

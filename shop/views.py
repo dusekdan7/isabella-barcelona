@@ -33,11 +33,11 @@ _CATEGORY_CHOICES = [
 ]
 
 def coleccion(request):
-    category = request.GET.get('category', '')
+    category = request.GET.get('category', '').upper()
     sort     = request.GET.get('sort', 'newest')
     qs = Product.objects.filter(is_published=True)
     if category:
-        qs = qs.filter(category=category)
+        qs = qs.filter(category__iexact=category)
     qs = qs.order_by(_SORT_MAP.get(sort, '-created_at'))
     return render(request, 'coleccion.html', {
         'products':         qs,

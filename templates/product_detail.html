@@ -8,7 +8,7 @@
 <!-- BREADCRUMBS -->
 <nav class="ib-breadcrumb" aria-label="Migas de pan">
     <p class="ib-breadcrumb-inner">
-        <a href="/">Inicio</a>
+        <a href="/">{{ nav.nav_inicio }}</a>
         <span class="ib-crumb-sep">›</span>
         <a href="/coleccion/?category={{ product.category }}">{{ product.get_category_display }}</a>
         <span class="ib-crumb-sep">›</span>
@@ -20,10 +20,9 @@
 
     <!-- FOTKA + GALLERY -->
     <div>
-        <!-- Main image -->
         <div class="ib-img-wrap" style="min-height: 450px; display: flex; align-items: center; justify-content: center; position: relative; cursor: zoom-in;" onclick="ibOpenZoom(document.getElementById('ib-main-img').src)">
             {% if product.is_on_sale %}
-            <span style="position: absolute; top: 16px; left: 16px; z-index: 2; background: #D9A0A0; color: #fff; padding: 6px 14px; font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 1px;">OFERTA</span>
+            <span style="position: absolute; top: 16px; left: 16px; z-index: 2; background: #D9A0A0; color: #fff; padding: 6px 14px; font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 1px;">{{ nav.pd_sale }}</span>
             {% endif %}
             {% if product.image_url %}
                 <img id="ib-main-img" src="{{ product.image_url }}" alt="{{ product|product_name:site_lang }}"
@@ -31,10 +30,9 @@
             {% else %}
                 <i class="fas fa-ring" style="font-size: 80px; color: #D9A0A0; z-index: 1;"></i>
             {% endif %}
-            <span style="position: absolute; bottom: 10px; right: 12px; font-family: Arial, sans-serif; font-size: 10px; color: #B08080; letter-spacing: 1px; z-index: 2;"><i class="fas fa-search-plus"></i> Ampliar</span>
+            <span style="position: absolute; bottom: 10px; right: 12px; font-family: Arial, sans-serif; font-size: 10px; color: #B08080; letter-spacing: 1px; z-index: 2;"><i class="fas fa-search-plus"></i> {{ nav.pd_enlarge }}</span>
         </div>
 
-        <!-- Thumbnails -->
         {% with all_images=product.images.all %}
         {% if product.image_url %}
         <div class="ib-thumb-strip">
@@ -56,10 +54,9 @@
         <p style="font-family: Arial, sans-serif; font-size: 11px; color: #D9A0A0; letter-spacing: 3px; margin-bottom: 12px;">{{ product.get_category_display|upper }}</p>
         <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 20px;">
             <h1 style="font-family: Georgia, serif; font-size: 28px; color: #2a1c1c; font-weight: normal; line-height: 1.3; margin: 0;">{{ product|product_name:site_lang }}</h1>
-            <!-- Wishlist on detail page -->
             <button class="ib-wish-btn" data-wish-id="{{ product.id }}"
                     onclick="ibToggleWishlist('{{ product.id }}', this)"
-                    title="Añadir a favoritos"
+                    title="{{ nav.pd_add_cart }}"
                     style="position: static; opacity: 1; transform: scale(1); flex-shrink: 0; font-size: 20px; width: 40px; height: 40px;">&#9825;</button>
         </div>
 
@@ -68,36 +65,35 @@
             <p style="font-size: 28px; color: #7A3E48; font-family: Georgia, serif;">{{ product.price|price_display:site_currency }}</p>
             {% if product.is_on_sale %}
             <p style="font-size: 18px; color: #aaa; text-decoration: line-through;">{{ product.compare_at_price|price_display:site_currency }}</p>
-            <span style="background: #7A3E48; color: #fff; padding: 4px 10px; font-size: 11px; font-family: Arial, sans-serif;">OFERTA</span>
+            <span style="background: #7A3E48; color: #fff; padding: 4px 10px; font-size: 11px; font-family: Arial, sans-serif;">{{ nav.pd_sale }}</span>
             {% endif %}
         </div>
 
         <!-- URGENCY BANNER -->
         <div style="display: flex; align-items: center; gap: 8px; background: #fff5f5; border: 1px solid #f5c6c6; padding: 10px 14px; margin-bottom: 20px;">
             <span style="font-size: 16px; flex-shrink: 0; color: #cc2222;"><i class="fas fa-fire"></i></span>
-            <p style="font-family: Arial, sans-serif; font-size: 13px; color: #cc2222; margin: 0; font-weight: 600;">¡Solo quedan <span id="ib-units">3</span> unidades!</p>
+            <p style="font-family: Arial, sans-serif; font-size: 13px; color: #cc2222; margin: 0; font-weight: 600;">{{ nav.pd_units_pre }}<span id="ib-units">3</span>{{ nav.pd_units_post }}</p>
         </div>
 
-        <!-- POPIS -->
         {% if product.description_es %}
         <p style="font-family: Arial, sans-serif; font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 24px;">{{ product.description_es }}</p>
         {% endif %}
 
         <!-- STOCK -->
         {% if product.stock_qty > 0 %}
-        <p style="font-family: Arial, sans-serif; font-size: 12px; color: #4a9a4a; margin-bottom: 20px;">✓ En stock — {{ product.stock_qty }} unidades disponibles</p>
+        <p style="font-family: Arial, sans-serif; font-size: 12px; color: #4a9a4a; margin-bottom: 20px;">{{ nav.pd_in_stock_pre }}{{ product.stock_qty }}{{ nav.pd_in_stock_post }}</p>
         {% else %}
-        <p style="font-family: Arial, sans-serif; font-size: 12px; color: #cc4444; margin-bottom: 20px;">✗ Sin stock</p>
+        <p style="font-family: Arial, sans-serif; font-size: 12px; color: #cc4444; margin-bottom: 20px;">{{ nav.pd_out_stock }}</p>
         {% endif %}
 
-        <!-- FORMULÁŘ: MNOŽSTVÍ + PŘIDAT DO KOŠÍKU -->
+        <!-- CANTIDAD + AÑADIR -->
         <form method="post" action="{% url 'add_to_cart' product.id %}">
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.path }}">
             <input type="hidden" name="qty" id="qty-input" value="1">
 
             <div style="margin-bottom: 20px;">
-                <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #7A3E48; margin-bottom: 10px;">CANTIDAD</p>
+                <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #7A3E48; margin-bottom: 10px;">{{ nav.pd_qty_label }}</p>
                 <div style="display: flex; align-items: center; border: 1px solid #D9A0A0; width: fit-content;">
                     <button type="button" onclick="changeQty(-1)" style="background: none; border: none; padding: 10px 16px; cursor: pointer; font-size: 18px; color: #7A3E48;">−</button>
                     <span id="qty-display" style="padding: 10px 20px; font-family: Georgia, serif; font-size: 16px; border-left: 1px solid #D9A0A0; border-right: 1px solid #D9A0A0;">1</span>
@@ -109,12 +105,12 @@
             <button id="ib-main-atc" type="submit"
                     style="display: block; width: 100%; background: #7A3E48; color: #FCFAF8; padding: 16px; border: none; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; margin-bottom: 12px; transition: background 0.2s, transform 0.1s;"
                     onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform=''" onmouseleave="this.style.transform=''">
-                Añadir al carrito
+                {{ nav.pd_add_cart }}
             </button>
             {% else %}
             <button id="ib-main-atc" type="button" disabled
                     style="display: block; width: 100%; background: #ccc; color: #fff; padding: 16px; border: none; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; cursor: not-allowed; margin-bottom: 12px;">
-                Sin stock
+                {{ nav.pd_no_stock_btn }}
             </button>
             {% endif %}
         </form>
@@ -123,124 +119,74 @@
         <div style="margin-top: 24px; border-top: 1px solid #f0e0e2; padding-top: 20px;">
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
                 <span style="font-size: 18px; color: #7A3E48;"><i class="fas fa-truck"></i></span>
-                <p style="font-family: Arial, sans-serif; font-size: 13px; color: #555;">Envío gratuito a partir de €100</p>
+                <p style="font-family: Arial, sans-serif; font-size: 13px; color: #555;">{{ nav.pd_free_ship }}</p>
             </div>
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
                 <span style="font-size: 18px; color: #7A3E48;"><i class="fas fa-lock"></i></span>
-                <p style="font-family: Arial, sans-serif; font-size: 13px; color: #555;">Pago 100% seguro — Stripe & PayPal</p>
+                <p style="font-family: Arial, sans-serif; font-size: 13px; color: #555;">{{ nav.pd_secure }}</p>
             </div>
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
                 <span style="font-size: 18px; color: #7A3E48;"><i class="fas fa-box"></i></span>
-                <p style="font-family: Arial, sans-serif; font-size: 13px; color: #555;">Devolución gratuita en 30 días</p>
+                <p style="font-family: Arial, sans-serif; font-size: 13px; color: #555;">{{ nav.pd_returns }}</p>
             </div>
             <div style="display: flex; align-items: center; gap: 10px;">
                 <span style="font-size: 18px; color: #7A3E48;"><i class="fas fa-star"></i></span>
-                <p style="font-family: Arial, sans-serif; font-size: 13px; color: #555;">4.9/5 — más de 2.000 reseñas verificadas</p>
+                <p style="font-family: Arial, sans-serif; font-size: 13px; color: #555;">{{ nav.pd_reviews_rating }}</p>
             </div>
         </div>
 
-        <!-- ACCORDION (Chloé-inspired) -->
+        <!-- ACCORDION -->
         <div class="ib-accordion" style="margin-top: 28px;">
 
             <style>
             .ib-accordion { border-top: 1px solid #e2cdd0; }
             .ib-acc-item  { border-bottom: 1px solid #e2cdd0; }
-
-            .ib-acc-trigger {
-                width: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 17px 0;
-                background: none;
-                border: none;
-                cursor: pointer;
-                text-align: left;
-                gap: 12px;
-            }
+            .ib-acc-trigger { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 17px 0; background: none; border: none; cursor: pointer; text-align: left; gap: 12px; }
             .ib-acc-trigger:hover .ib-acc-label { color: #7A3E48; }
-
-            .ib-acc-label {
-                font-family: Arial, sans-serif;
-                font-size: 11px;
-                letter-spacing: 2.5px;
-                color: #2a1c1c;
-                text-transform: uppercase;
-                transition: color 0.2s;
-            }
+            .ib-acc-label { font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2.5px; color: #2a1c1c; text-transform: uppercase; transition: color 0.2s; }
             .ib-acc-trigger[aria-expanded="true"] .ib-acc-label { color: #7A3E48; }
-
-            .ib-acc-chevron {
-                flex-shrink: 0;
-                transition: transform 0.3s ease;
-                color: #7A3E48;
-            }
-            .ib-acc-trigger[aria-expanded="true"] .ib-acc-chevron {
-                transform: rotate(180deg);
-            }
-
-            .ib-acc-body {
-                overflow: hidden;
-                max-height: 0;
-                transition: max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1),
-                            opacity 0.3s ease;
-                opacity: 0;
-            }
-            .ib-acc-body.ib-acc-open {
-                opacity: 1;
-            }
-
-            .ib-acc-inner {
-                padding: 4px 0 22px;
-                font-family: Georgia, serif;
-                font-size: 13px;
-                color: #5a4a4a;
-                line-height: 1.85;
-            }
+            .ib-acc-chevron { flex-shrink: 0; transition: transform 0.3s ease; color: #7A3E48; }
+            .ib-acc-trigger[aria-expanded="true"] .ib-acc-chevron { transform: rotate(180deg); }
+            .ib-acc-body { overflow: hidden; max-height: 0; transition: max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease; opacity: 0; }
+            .ib-acc-body.ib-acc-open { opacity: 1; }
+            .ib-acc-inner { padding: 4px 0 22px; font-family: Georgia, serif; font-size: 13px; color: #5a4a4a; line-height: 1.85; }
             </style>
 
-            <!-- 1. DETALLES DEL PRODUCTO -->
             <div class="ib-acc-item">
                 <button class="ib-acc-trigger" onclick="ibAcc(this)" aria-expanded="false">
-                    <span class="ib-acc-label">Detalles del producto</span>
+                    <span class="ib-acc-label">{{ nav.pd_acc_details }}</span>
                     <svg class="ib-acc-chevron" width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
                         <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
                 <div class="ib-acc-body" style="max-height:0;">
                     <div class="ib-acc-inner">
-                        {{ product.description_es|default:"Joya de alta calidad fabricada con materiales premium. Baño de oro de 18K, hipoalergénica y resistente al agua." }}
+                        {{ product.description_es|default:nav.pd_acc_details_dflt }}
                     </div>
                 </div>
             </div>
 
-            <!-- 2. CALIDAD -->
             <div class="ib-acc-item">
                 <button class="ib-acc-trigger" onclick="ibAcc(this)" aria-expanded="false">
-                    <span class="ib-acc-label">Calidad</span>
+                    <span class="ib-acc-label">{{ nav.pd_acc_quality }}</span>
                     <svg class="ib-acc-chevron" width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
                         <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
                 <div class="ib-acc-body" style="max-height:0;">
-                    <div class="ib-acc-inner">
-                        Ofrecemos garantía de 365 días en cada joya. Nuestras joyas no se decoloran y cumplen con estrictas directrices de calidad. Para mantener tus joyas bonitas durante más tiempo, recomendamos evitar el contacto con el agua.
-                    </div>
+                    <div class="ib-acc-inner">{{ nav.pd_acc_quality_text }}</div>
                 </div>
             </div>
 
-            <!-- 3. CONSEJOS DE USO -->
             <div class="ib-acc-item">
                 <button class="ib-acc-trigger" onclick="ibAcc(this)" aria-expanded="false">
-                    <span class="ib-acc-label">Consejos de uso</span>
+                    <span class="ib-acc-label">{{ nav.pd_acc_tips }}</span>
                     <svg class="ib-acc-chevron" width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
                         <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
                 <div class="ib-acc-body" style="max-height:0;">
-                    <div class="ib-acc-inner">
-                        Mantén siempre tus joyas fuera del alcance de los niños. Retira tus joyas en la ducha, al dormir, en la sauna o durante actividades deportivas.
-                    </div>
+                    <div class="ib-acc-inner">{{ nav.pd_acc_tips_text }}</div>
                 </div>
             </div>
 
@@ -261,15 +207,11 @@ function changeQty(delta) {
 function ibAcc(trigger) {
     var body    = trigger.nextElementSibling;
     var isOpen  = body.classList.contains('ib-acc-open');
-
-    /* close all */
     document.querySelectorAll('.ib-acc-body.ib-acc-open').forEach(function(b) {
         b.style.maxHeight = '0';
         b.classList.remove('ib-acc-open');
         b.previousElementSibling.setAttribute('aria-expanded', 'false');
     });
-
-    /* open clicked one (if it was closed) */
     if (!isOpen) {
         body.style.maxHeight = body.scrollHeight + 'px';
         body.classList.add('ib-acc-open');
@@ -281,7 +223,7 @@ function ibAcc(trigger) {
 <!-- RELACIONADOS -->
 {% if related %}
 <section style="padding: 40px; border-top: 1px solid #f0e0e2; max-width: 1100px; margin: 0 auto;">
-    <h2 style="font-family: Georgia, serif; font-size: 22px; color: #7A3E48; font-weight: normal; margin-bottom: 30px; text-align: center;">También te puede gustar</h2>
+    <h2 style="font-family: Georgia, serif; font-size: 22px; color: #7A3E48; font-weight: normal; margin-bottom: 30px; text-align: center;">{{ nav.pd_related }}</h2>
     <div class="ib-product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
         {% for p in related %}
         <div class="ib-product-card">
@@ -297,13 +239,13 @@ function ibAcc(trigger) {
                         {% csrf_token %}
                         <input type="hidden" name="qty" value="1">
                         <input type="hidden" name="next" value="{{ request.path }}">
-                        <button type="submit" class="ib-quick-add-btn">＋ Añadir</button>
+                        <button type="submit" class="ib-quick-add-btn">{{ nav.btn_add }}</button>
                     </form>
                 </div>
             </div>
             <button class="ib-wish-btn" data-wish-id="{{ p.id }}"
                     onclick="ibToggleWishlist('{{ p.id }}', this)"
-                    title="Añadir a favoritos">&#9825;</button>
+                    title="{{ nav.pd_add_cart }}">&#9825;</button>
             <div class="ib-card-info">
                 <p style="font-family: Georgia, serif; font-size: 13px; color: #2a1c1c; margin-bottom: 6px;">{{ p|product_name:site_lang }}</p>
                 <p style="font-family: Arial, sans-serif; font-size: 13px; color: #7A3E48; font-weight: bold;">{{ p.price|price_display:site_currency }}</p>
@@ -315,7 +257,7 @@ function ibAcc(trigger) {
 {% endif %}
 
 <!-- STICKY ATC BAR -->
-<div id="ib-sticky-atc" role="complementary" aria-label="Añadir al carrito">
+<div id="ib-sticky-atc" role="complementary" aria-label="{{ nav.pd_add_cart }}">
     <div class="ib-sticky-name" style="flex: 1; min-width: 0;">
         <p style="font-family: Georgia, serif; font-size: 15px; color: #2a1c1c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0;">
             {{ product|product_name:site_lang }}
@@ -331,14 +273,13 @@ function ibAcc(trigger) {
         <input type="hidden" name="next" value="{{ request.path }}">
         <button type="submit"
                 style="background: #7A3E48; color: #FCFAF8; border: none; padding: 12px 28px; font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; cursor: pointer; white-space: nowrap; transition: background 0.2s;">
-            Añadir al carrito
+            {{ nav.pd_add_cart }}
         </button>
     </form>
     {% endif %}
 </div>
 
 <script>
-/* Gallery */
 function ibSwitchImg(thumb, src) {
     var img = document.getElementById('ib-main-img');
     if (!img) return;
@@ -348,7 +289,6 @@ function ibSwitchImg(thumb, src) {
     thumb.classList.add('ib-thumb-active');
 }
 
-/* Sticky ATC — show when main button scrolls out of view */
 (function() {
     var mainBtn = document.getElementById('ib-main-atc');
     var stickyBar = document.getElementById('ib-sticky-atc');
@@ -366,18 +306,18 @@ function ibSwitchImg(thumb, src) {
         <div id="ib-sp-avatar" style="width:38px; height:38px; border-radius:50%; background:#7A3E48; display:flex; align-items:center; justify-content:center; color:#fff; font-family:Georgia,serif; font-size:16px; font-weight:bold; flex-shrink:0;"></div>
         <p id="ib-sp-text" style="font-family:Arial,sans-serif; font-size:12px; color:#2a1c1c; line-height:1.5; margin:0;"></p>
     </div>
-    <p style="font-family:Arial,sans-serif; font-size:10px; color:#D9A0A0; margin:7px 0 0 48px; letter-spacing:0.3px;">Hace unos minutos · Isabella Barcelona</p>
+    <p style="font-family:Arial,sans-serif; font-size:10px; color:#D9A0A0; margin:7px 0 0 48px; letter-spacing:0.3px;">{{ nav.pd_sp_ago }}</p>
 </div>
 
 <script>
 (function() {
-    /* Urgency units — random 2-7 */
     var u = document.getElementById('ib-units');
     if (u) u.textContent = Math.floor(Math.random() * 6) + 2;
 
-    /* Social proof notification */
-    var names  = ['María','Carmen','Lucía','Ana','Isabel','Laura','Marta','Elena','Sofía','Paula','Nuria','Raquel','Cristina','Sara','Natalia'];
-    var cities = ['Barcelona','Madrid','Valencia','Sevilla','Zaragoza','Bilbao','Málaga','Alicante','Granada','Murcia','Palma','Valladolid','Pamplona','Santander'];
+    var names  = ['María','Carmen','Lucía','Ana','Isabel','Laura','Marta','Elena','Sofía','Paula'];
+    var cities = ['Barcelona','Madrid','Valencia','Sevilla','Zaragoza','Bilbao','Málaga','Alicante'];
+    var spFrom    = '{{ nav.pd_sp_from }}';
+    var spBought  = '{{ nav.pd_sp_bought }}';
 
     function ibShowSP() {
         var name = names[Math.floor(Math.random() * names.length)];
@@ -385,7 +325,7 @@ function ibSwitchImg(thumb, src) {
         var notif = document.getElementById('ib-sp-notif');
         document.getElementById('ib-sp-avatar').textContent = name[0];
         document.getElementById('ib-sp-text').innerHTML =
-            '<strong>' + name + '</strong> de ' + city + ' acaba de comprar este producto <i class="fas fa-star" style="color:#f5c518;"></i>';
+            '<strong>' + name + '</strong> ' + spFrom + ' ' + city + ' ' + spBought + ' <i class="fas fa-star" style="color:#f5c518;"></i>';
         notif.style.transform = 'translateX(0)';
         setTimeout(function() {
             notif.style.transform = 'translateX(-130%)';

@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load shop_extras %}
-{% block title %}Colección — Isabella Barcelona{% endblock %}
+{% block title %}{{ nav.nav_coleccion }} — Isabella Barcelona{% endblock %}
 
 {% block content %}
 
 <!-- HERO -->
 <div style="background: linear-gradient(135deg, #f5eaec, #FCFAF8); padding: 60px 40px; text-align: center; border-bottom: 1px solid #f0e0e2;">
-    <h1 style="font-family: Georgia, serif; font-size: 36px; color: #7A3E48; margin-bottom: 10px; letter-spacing: 2px;">Colección</h1>
-    <p style="font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 4px; color: #B08080; text-transform: uppercase;">Isabella Barcelona · 2026</p>
+    <h1 style="font-family: Georgia, serif; font-size: 36px; color: #7A3E48; margin-bottom: 10px; letter-spacing: 2px;">{{ nav.nav_coleccion }}</h1>
+    <p style="font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 4px; color: #B08080; text-transform: uppercase;">{{ nav.coleccion_sub }}</p>
 </div>
 
 <!-- FILTRY KATEGORIÍ + SORT -->
@@ -18,7 +18,7 @@
         {% with cat_style="padding: 8px 20px; font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; border: 1px solid #7A3E48; transition: all 0.2s;" %}
         <a href="/coleccion/{% if active_sort != 'newest' %}?sort={{ active_sort }}{% endif %}"
            style="{{ cat_style }} {% if not active_category %}background: #7A3E48; color: #fff;{% else %}background: transparent; color: #7A3E48;{% endif %}">
-            Todo
+            {{ nav.cat_all }}
         </a>
         {% for cat_key, cat_label in category_choices %}
         <a href="/coleccion/?category={{ cat_key }}{% if active_sort != 'newest' %}&sort={{ active_sort }}{% endif %}"
@@ -32,13 +32,13 @@
     <!-- Sort + count -->
     <div style="display: flex; align-items: center; gap: 16px;">
         <span style="font-family: Arial, sans-serif; font-size: 11px; color: #B08080; letter-spacing: 1px;">
-            {{ products|length }} producto{% if products|length != 1 %}s{% endif %}
+            {{ products|length }} {% if products|length != 1 %}{{ nav.product_plural }}{% else %}{{ nav.product_singular }}{% endif %}
         </span>
         <select id="ib-sort-select" onchange="ibSort(this)"
                 style="font-family: Arial, sans-serif; font-size: 12px; color: #7A3E48; border: 1px solid #D9A0A0; background: #fff; padding: 7px 28px 7px 10px; cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22><path d=%22M0 0l5 6 5-6z%22 fill=%22%237A3E48%22/></svg>'); background-repeat: no-repeat; background-position: right 10px center;">
-            <option value="newest"     {% if active_sort == 'newest'     %}selected{% endif %}>Novedades</option>
-            <option value="price_asc"  {% if active_sort == 'price_asc'  %}selected{% endif %}>Precio ↑</option>
-            <option value="price_desc" {% if active_sort == 'price_desc' %}selected{% endif %}>Precio ↓</option>
+            <option value="newest"     {% if active_sort == 'newest'     %}selected{% endif %}>{{ nav.sort_newest }}</option>
+            <option value="price_asc"  {% if active_sort == 'price_asc'  %}selected{% endif %}>{{ nav.sort_price_asc }}</option>
+            <option value="price_desc" {% if active_sort == 'price_desc' %}selected{% endif %}>{{ nav.sort_price_desc }}</option>
         </select>
     </div>
 </div>
@@ -58,13 +58,11 @@ function ibSort(sel) {
         {% for p in products %}
         <div class="ib-product-card">
 
-            <!-- Stretch link (whole card navigates) -->
             <a href="{% url 'product_detail' p.slug %}" class="ib-card-link" aria-label="{{ p|product_name:site_lang }}"></a>
 
-            <!-- Image wrapper -->
             <div class="ib-img-wrap" style="height: 260px; display: flex; align-items: center; justify-content: center;">
                 {% if p.is_on_sale %}
-                <span style="position: absolute; top: 10px; left: 10px; z-index: 2; background: #D9A0A0; color: #fff; padding: 4px 10px; font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 1px;">OFERTA</span>
+                <span style="position: absolute; top: 10px; left: 10px; z-index: 2; background: #D9A0A0; color: #fff; padding: 4px 10px; font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 1px;">{{ nav.sale_badge }}</span>
                 {% endif %}
                 {% if p.image_url %}
                     <img src="{{ p.image_url }}" alt="{{ p|product_name:site_lang }}" loading="lazy">
@@ -72,23 +70,20 @@ function ibSort(sel) {
                     <i class="fas fa-ring" style="font-size: 48px; color: #D9A0A0; z-index: 1;"></i>
                 {% endif %}
 
-                <!-- Quick-add overlay -->
                 <div class="ib-quick-add">
                     <form method="post" action="{% url 'add_to_cart' p.id %}">
                         {% csrf_token %}
                         <input type="hidden" name="qty" value="1">
                         <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                        <button type="submit" class="ib-quick-add-btn">＋ Añadir</button>
+                        <button type="submit" class="ib-quick-add-btn">{{ nav.btn_add }}</button>
                     </form>
                 </div>
             </div>
 
-            <!-- Wishlist -->
             <button class="ib-wish-btn" data-wish-id="{{ p.id }}"
                     onclick="ibToggleWishlist('{{ p.id }}', this)"
-                    title="Añadir a favoritos" aria-label="Añadir a favoritos">&#9825;</button>
+                    title="{{ nav.pd_add_cart }}" aria-label="{{ nav.pd_add_cart }}">&#9825;</button>
 
-            <!-- Info -->
             <div class="ib-card-info">
                 <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 2px; color: #B08080; text-transform: uppercase; margin-bottom: 6px;">{{ p.get_category_display }}</p>
                 <p style="font-family: Georgia, serif; font-size: 15px; color: #2a1c1c; margin-bottom: 10px; line-height: 1.4;">{{ p|product_name:site_lang }}</p>
@@ -109,9 +104,9 @@ function ibSort(sel) {
 
     {% else %}
     <div style="text-align: center; padding: 80px 0;">
-        <p style="font-family: Georgia, serif; font-size: 20px; color: #7A3E48; margin-bottom: 8px;">No hay productos en esta categoría</p>
-        <p style="font-family: Arial, sans-serif; font-size: 13px; color: #B08080; margin-bottom: 32px;">Prueba con otra categoría o explora toda la colección.</p>
-        <a href="/coleccion/" style="background: #7A3E48; color: #fff; padding: 12px 32px; font-family: Arial, sans-serif; font-size: 13px; text-decoration: none; letter-spacing: 1px; text-transform: uppercase;">Ver Todo</a>
+        <p style="font-family: Georgia, serif; font-size: 20px; color: #7A3E48; margin-bottom: 8px;">{{ nav.col_empty_title }}</p>
+        <p style="font-family: Arial, sans-serif; font-size: 13px; color: #B08080; margin-bottom: 32px;">{{ nav.col_empty_text }}</p>
+        <a href="/coleccion/" style="background: #7A3E48; color: #fff; padding: 12px 32px; font-family: Arial, sans-serif; font-size: 13px; text-decoration: none; letter-spacing: 1px; text-transform: uppercase;">{{ nav.col_empty_cta }}</a>
     </div>
     {% endif %}
 </div>

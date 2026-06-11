@@ -611,6 +611,12 @@ document.addEventListener('click', function() {
     {% endif %}
 </nav>
 
+<!-- SCHOOL DISCLAIMER -->
+<div id="ib-school-bar" style="background: #7A3E48; color: #f0e0e2; text-align: center; padding: 7px 40px; font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 0.8px; line-height: 1.4; position: relative;">
+    {{ nav.school_disclaimer }}
+    <button onclick="document.getElementById('ib-school-bar').style.display='none'" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:#D9A0A0;font-size:16px;cursor:pointer;line-height:1;padding:0;" aria-label="Cerrar">✕</button>
+</div>
+
 <!-- FLASH MESSAGES -->
 {% if messages %}
 <div class="messages-bar">
@@ -630,46 +636,46 @@ document.addEventListener('click', function() {
 
         <!-- NEWSLETTER -->
         <div>
-            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; margin-bottom: 16px; color: #D9A0A0;">ÚNETE A LA FAMILIA</p>
-            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; margin-bottom: 16px; color: #f0e0e2;">Recibe en primicia nuestras nuevas colecciones y ofertas exclusivas.</p>
+            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; margin-bottom: 16px; color: #D9A0A0;">{{ nav.footer_newsletter_title }}</p>
+            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; margin-bottom: 16px; color: #f0e0e2;">{{ nav.footer_newsletter_text }}</p>
             <div style="display: flex; border-bottom: 1px solid #D9A0A0;">
-                <input type="email" placeholder="Tu dirección email" style="background: transparent; border: none; color: #FCFAF8; font-family: Georgia, serif; font-size: 12px; padding: 8px 0; flex: 1; outline: none;">
+                <input type="email" placeholder="{{ nav.footer_newsletter_ph }}" style="background: transparent; border: none; color: #FCFAF8; font-family: Georgia, serif; font-size: 12px; padding: 8px 0; flex: 1; outline: none;">
                 <button style="background: transparent; border: none; color: #D9A0A0; cursor: pointer; font-size: 18px;">→</button>
             </div>
         </div>
 
-        <!-- MISE -->
+        <!-- MISSION -->
         <div>
-            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; margin-bottom: 16px; color: #D9A0A0;">NUESTRA MISIÓN</p>
-            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; color: #f0e0e2; font-style: italic;">Isabella Barcelona nació de una idea simple — que cada mujer merece llevar algo bello cada día.</p>
-            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; color: #f0e0e2; font-style: italic; margin-top: 10px;">Con amor, Isabella <i class="fas fa-ring"></i></p>
+            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; margin-bottom: 16px; color: #D9A0A0;">{{ nav.footer_mission_title }}</p>
+            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; color: #f0e0e2; font-style: italic;">{{ nav.footer_mission_text }}</p>
+            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; color: #f0e0e2; font-style: italic; margin-top: 10px;">{{ nav.footer_mission_sign }} <i class="fas fa-ring"></i></p>
         </div>
 
-        <!-- INFORMACE -->
+        <!-- INFO -->
         <div>
-            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; margin-bottom: 16px; color: #D9A0A0;">INFORMACIÓN</p>
+            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; margin-bottom: 16px; color: #D9A0A0;">{{ nav.footer_info_title }}</p>
             <ul style="list-style: none; padding: 0;">
-                <li style="margin-bottom: 10px;"><a href="{% url 'preguntas_frecuentes' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">Preguntas frecuentes</a></li>
-                <li style="margin-bottom: 10px;"><a href="{% url 'nuestra_historia' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">Nuestra Historia</a></li>
-                <li style="margin-bottom: 10px;"><a href="{% url 'aviso_legal' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">Aviso Legal</a></li>
-                <li style="margin-bottom: 10px;"><a href="{% url 'condiciones_venta' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">Condiciones de venta</a></li>
-                <li style="margin-bottom: 10px;"><a href="{% url 'politica_devoluciones' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">Política de devoluciones</a></li>
+                <li style="margin-bottom: 10px;"><a href="{% url 'preguntas_frecuentes' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">{{ nav.footer_faq_link }}</a></li>
+                <li style="margin-bottom: 10px;"><a href="{% url 'nuestra_historia' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">{{ nav.footer_story_link }}</a></li>
+                <li style="margin-bottom: 10px;"><a href="{% url 'aviso_legal' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">{{ nav.footer_legal_link }}</a></li>
+                <li style="margin-bottom: 10px;"><a href="{% url 'condiciones_venta' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">{{ nav.footer_terms_link }}</a></li>
+                <li style="margin-bottom: 10px;"><a href="{% url 'politica_devoluciones' %}" style="color: #f0e0e2; text-decoration: none; font-family: Arial, sans-serif; font-size: 13px;">{{ nav.footer_returns_link }}</a></li>
             </ul>
         </div>
 
-        <!-- SERVIS -->
+        <!-- SERVICE -->
         <div>
-            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; margin-bottom: 16px; color: #D9A0A0;">ATENCIÓN AL CLIENTE</p>
-            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; color: #f0e0e2;">¿Tienes alguna pregunta o necesitas ayuda?</p>
-            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; color: #f0e0e2; margin-top: 10px;">Nuestro equipo está aquí para acompañarte.</p>
+            <p style="font-family: Arial, sans-serif; font-size: 11px; letter-spacing: 3px; margin-bottom: 16px; color: #D9A0A0;">{{ nav.footer_service_title }}</p>
+            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; color: #f0e0e2;">{{ nav.footer_service_text1 }}</p>
+            <p style="font-family: Georgia, serif; font-size: 13px; line-height: 1.7; color: #f0e0e2; margin-top: 10px;">{{ nav.footer_service_text2 }}</p>
             <p style="font-family: Arial, sans-serif; font-size: 12px; color: #D9A0A0; margin-top: 16px;"><i class="fas fa-envelope"></i> info@isabellabcn.com</p>
-            <p style="font-family: Arial, sans-serif; font-size: 12px; color: #D9A0A0; margin-top: 6px;"><i class="fas fa-clock"></i> Lunes – Viernes: 10:00 – 18:00</p>
+            <p style="font-family: Arial, sans-serif; font-size: 12px; color: #D9A0A0; margin-top: 6px;"><i class="fas fa-clock"></i> {{ nav.footer_hours }}</p>
         </div>
     </div>
 
-    <!-- DOLNÍ LINKA -->
+    <!-- BOTTOM ROW -->
     <div style="border-top: 1px solid #a06070; padding-top: 24px; text-align: center; max-width: 1200px; margin: 0 auto;">
-        <p style="font-family: Georgia, serif; font-size: 13px; color: #D9A0A0; letter-spacing: 2px;">© 2026 Isabella Barcelona · Todos los derechos reservados</p>
+        <p style="font-family: Georgia, serif; font-size: 13px; color: #D9A0A0; letter-spacing: 2px;">{{ nav.footer_copyright }}</p>
     </div>
 </footer>
 
@@ -681,8 +687,8 @@ function ibGetWL() { try { return JSON.parse(localStorage.getItem(IB_WL_KEY)||'[
 function ibSaveWL(l) { localStorage.setItem(IB_WL_KEY, JSON.stringify(l)); }
 function ibToggleWishlist(id, btn) {
     var l = ibGetWL(), k = String(id), i = l.indexOf(k);
-    if (i === -1) { l.push(k); btn.classList.add('ib-wish-active'); btn.innerHTML='&#9829;'; btn.title='Quitar de favoritos'; }
-    else          { l.splice(i,1); btn.classList.remove('ib-wish-active'); btn.innerHTML='&#9825;'; btn.title='Añadir a favoritos'; }
+    if (i === -1) { l.push(k); btn.classList.add('ib-wish-active'); btn.innerHTML='&#9829;'; }
+    else          { l.splice(i,1); btn.classList.remove('ib-wish-active'); btn.innerHTML='&#9825;'; }
     ibSaveWL(l);
     event.stopPropagation();
 }
@@ -760,16 +766,16 @@ document.addEventListener('DOMContentLoaded', function() {
     <div style="background:#FCFAF8; max-width:420px; width:100%; padding:48px 40px 40px; text-align:center; position:relative; animation:ib-zoom-in 0.28s ease; box-shadow:0 24px 64px rgba(42,28,28,0.3);">
         <button onclick="ibCloseExit()" style="position:absolute; top:14px; right:18px; background:none; border:none; font-size:22px; color:#B08080; cursor:pointer; line-height:1; padding:0;" aria-label="Cerrar">✕</button>
         <p style="font-size:36px; margin-bottom:8px; color:#7A3E48;"><i class="fas fa-heart"></i></p>
-        <p style="font-family:Arial,sans-serif; font-size:10px; letter-spacing:3px; color:#D9A0A0; margin-bottom:10px; text-transform:uppercase;">No te vayas aún</p>
-        <h2 style="font-family:Georgia,serif; font-size:24px; color:#7A3E48; font-weight:normal; line-height:1.4; margin-bottom:14px;">¡Espera! Tu carrito<br>te está esperando <i class="fas fa-heart" style="color:#D9A0A0;"></i></h2>
-        <p style="font-family:Arial,sans-serif; font-size:13px; color:#888; line-height:1.7; margin-bottom:24px;">Como regalo especial, usa este código exclusivo y llévate un 10% de descuento en tu pedido:</p>
+        <p style="font-family:Arial,sans-serif; font-size:10px; letter-spacing:3px; color:#D9A0A0; margin-bottom:10px; text-transform:uppercase;">{{ nav.exit_tagline }}</p>
+        <h2 style="font-family:Georgia,serif; font-size:24px; color:#7A3E48; font-weight:normal; line-height:1.4; margin-bottom:14px;">{{ nav.exit_title|safe }} <i class="fas fa-heart" style="color:#D9A0A0;"></i></h2>
+        <p style="font-family:Arial,sans-serif; font-size:13px; color:#888; line-height:1.7; margin-bottom:24px;">{{ nav.exit_text }}</p>
         <div style="background:#fff; border:2px dashed #D9A0A0; padding:16px 28px; margin:0 auto 24px; display:inline-block; min-width:200px;">
-            <p style="font-family:Arial,sans-serif; font-size:10px; color:#B08080; letter-spacing:2px; margin-bottom:6px; text-transform:uppercase;">Tu código exclusivo</p>
+            <p style="font-family:Arial,sans-serif; font-size:10px; color:#B08080; letter-spacing:2px; margin-bottom:6px; text-transform:uppercase;">{{ nav.exit_code_label }}</p>
             <p style="font-family:Georgia,serif; font-size:28px; color:#7A3E48; letter-spacing:5px; font-weight:bold; margin:0;">ISABELLA10</p>
-            <p style="font-family:Arial,sans-serif; font-size:11px; color:#D9A0A0; margin-top:6px;">10% de descuento en tu pedido</p>
+            <p style="font-family:Arial,sans-serif; font-size:11px; color:#D9A0A0; margin-top:6px;">{{ nav.exit_discount_txt }}</p>
         </div>
-        <a href="/coleccion/" onclick="ibCloseExit()" style="display:block; background:#7A3E48; color:#FCFAF8; padding:15px; text-decoration:none; font-family:Arial,sans-serif; font-size:11px; letter-spacing:3px; text-transform:uppercase; margin-bottom:12px; transition:background 0.2s;">Quiero mi descuento →</a>
-        <button onclick="ibCloseExit()" style="background:none; border:none; font-family:Arial,sans-serif; font-size:11px; color:#B08080; cursor:pointer; letter-spacing:1px; text-decoration:underline; text-underline-offset:3px;">No, gracias — prefiero pagar más</button>
+        <a href="/coleccion/" onclick="ibCloseExit()" style="display:block; background:#7A3E48; color:#FCFAF8; padding:15px; text-decoration:none; font-family:Arial,sans-serif; font-size:11px; letter-spacing:3px; text-transform:uppercase; margin-bottom:12px; transition:background 0.2s;">{{ nav.exit_cta }}</a>
+        <button onclick="ibCloseExit()" style="background:none; border:none; font-family:Arial,sans-serif; font-size:11px; color:#B08080; cursor:pointer; letter-spacing:1px; text-decoration:underline; text-underline-offset:3px;">{{ nav.exit_dismiss }}</button>
     </div>
 </div>
 <script>
